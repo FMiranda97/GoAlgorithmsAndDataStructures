@@ -6,7 +6,6 @@ import (
 )
 
 //TODO count elements
-//todo iterator
 //todo convert to array
 //todo construct from array
 //todo remove
@@ -18,7 +17,7 @@ type LinkedList struct { //todo check if should be lower case
 }
 
 // linked list constructor
-func NewList() LinkedList {
+func NewLinkedList() LinkedList {
 	return LinkedList{
 		count: 0,
 		first: nil,
@@ -29,6 +28,9 @@ func NewList() LinkedList {
 func (list *LinkedList) Insert(cargo interface{}) error {
 	var err error
 	list.first, err = insertLinkedListUtil(list.first, cargo)
+	if err == nil {
+		list.count++
+	}
 	return err
 }
 
@@ -65,6 +67,18 @@ func insertLinkedListUtil(list *node, cargo interface{}) (*node, error) {
 	newNode.next = i.next
 	i.next = &newNode
 	return list, nil
+}
+
+func (list *LinkedList) GetIterator() func() interface{} {
+	elem := list.first
+	return func() interface{} {
+		if elem == nil {
+			return nil
+		}
+		aux := elem.cargo
+		elem = elem.next
+		return aux
+	}
 }
 
 // method to display linked list contents
