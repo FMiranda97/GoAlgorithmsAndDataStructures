@@ -118,16 +118,13 @@ func Push(stack *LinkedList, cargo interface{}) error {
 	if *stack == nil {
 		*stack = &newNode
 		return nil
-	} else if comp, err := comparator((*stack).cargo, newNode.cargo); comp != 0 {
-		if err == nil {
-			newNode.next = *stack
-			*stack = &newNode
-			return nil
-		} else {
-			return err
-		}
+	} else if _, err := comparator((*stack).cargo, newNode.cargo); err == nil {
+		newNode.next = *stack
+		*stack = &newNode
+		return nil
+	} else {
+		return err
 	}
-	return nil
 }
 
 func Pop(stack *LinkedList) (interface{}, error) {
