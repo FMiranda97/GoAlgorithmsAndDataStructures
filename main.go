@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./linkedList"
+	"../GoLinkedList/linkedList"
 	"fmt"
 	"log"
 )
@@ -11,13 +11,13 @@ type pessoa struct {
 	name string
 }
 
-/*func (p pessoa) getKey() string { //object oriented function
+func (p pessoa) GetKey() string { //object oriented function
 	return p.name
-}*/
-
-func (p pessoa) getKey() int { //object oriented function
-	return p.id
 }
+
+/*func (p pessoa) GetKey() int { //object oriented function
+	return p.id
+}*/
 
 func main() {
 	list := linkedList.NewList()

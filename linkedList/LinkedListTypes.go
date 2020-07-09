@@ -1,15 +1,15 @@
 package linkedList
 
-type linkedListCargoString interface {
-	getKey() string
+type cargoLinkedListString interface {
+	GetKey() string
 }
 
-type linkedListCargoInt64 interface {
-	getKey() int64
+type cargoLinkedListInt64 interface {
+	GetKey() int64
 }
 
-type linkedListCargoInt interface {
-	getKey() int
+type cargoLinkedListInt interface {
+	GetKey() int
 }
 
 type LinkedList = *node
@@ -20,13 +20,13 @@ type node struct {
 }
 
 func implementsLinkedListCargo(cargo interface{}) bool {
-	if _, ok := cargo.(linkedListCargoString); ok {
+	if _, ok := cargo.(cargoLinkedListString); ok {
 		return true
 	}
-	if _, ok := cargo.(linkedListCargoInt); ok {
+	if _, ok := cargo.(cargoLinkedListInt); ok {
 		return true
 	}
-	if _, ok := cargo.(linkedListCargoInt64); ok {
+	if _, ok := cargo.(cargoLinkedListInt64); ok {
 		return true
 	}
 	return false

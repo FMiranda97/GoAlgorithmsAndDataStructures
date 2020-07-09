@@ -11,32 +11,32 @@ func comparator(this interface{}, target interface{}) (int8, error) {
 		return 0, errors.New("compared parameters implement different interfaces")
 	}
 	switch this.(type) {
-	case linkedListCargoString:
-		a := this.(linkedListCargoString)
-		b := target.(linkedListCargoString)
-		if a.getKey() < b.getKey() {
+	case cargoLinkedListString:
+		a := this.(cargoLinkedListString)
+		b := target.(cargoLinkedListString)
+		if a.GetKey() < b.GetKey() {
 			return -1, nil
-		} else if a.getKey() > b.getKey() {
+		} else if a.GetKey() > b.GetKey() {
 			return 1, nil
 		} else {
 			return 0, nil
 		}
-	case linkedListCargoInt:
-		a := this.(linkedListCargoInt)
-		b := target.(linkedListCargoInt)
-		if a.getKey() < b.getKey() {
+	case cargoLinkedListInt:
+		a := this.(cargoLinkedListInt)
+		b := target.(cargoLinkedListInt)
+		if a.GetKey() < b.GetKey() {
 			return -1, nil
-		} else if a.getKey() > b.getKey() {
+		} else if a.GetKey() > b.GetKey() {
 			return 1, nil
 		} else {
 			return 0, nil
 		}
-	case linkedListCargoInt64:
-		a := this.(linkedListCargoInt)
-		b := target.(linkedListCargoInt)
-		if a.getKey() < b.getKey() {
+	case cargoLinkedListInt64:
+		a := this.(cargoLinkedListInt)
+		b := target.(cargoLinkedListInt)
+		if a.GetKey() < b.GetKey() {
 			return -1, nil
-		} else if a.getKey() > b.getKey() {
+		} else if a.GetKey() > b.GetKey() {
 			return 1, nil
 		} else {
 			return 0, nil
@@ -48,9 +48,9 @@ func comparator(this interface{}, target interface{}) (int8, error) {
 
 func InsertList(list *LinkedList, cargo interface{}) error {
 	// check viability
-	if *list != nil && reflect.TypeOf((*list).cargo) != reflect.TypeOf(cargo) {
+	/*if *list != nil && reflect.TypeOf((*list).cargo) != reflect.TypeOf(cargo) {
 		return errors.New("cargo is not of same type as contents previously inserted")
-	}
+	}*/
 	if !implementsLinkedListCargo(cargo) {
 		return errors.New("cargo does not implement a supported interface")
 	}
