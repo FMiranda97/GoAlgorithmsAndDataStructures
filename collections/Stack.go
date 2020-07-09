@@ -6,11 +6,13 @@ import (
 	"fmt"
 )
 
+// stack object
 type Stack struct {
 	count int32
 	first *node
 }
 
+// stack constructor
 func NewStack() Stack {
 	return Stack{
 		count: 0,
@@ -18,12 +20,14 @@ func NewStack() Stack {
 	}
 }
 
+// method to push cargo into stack
 func (stack *Stack) Push(cargo interface{}) error {
 	var err error
 	stack.first, err = pushUtil(stack.first, cargo)
 	return err
 }
 
+// utility function for stack pushing
 func pushUtil(stack *node, cargo interface{}) (*node, error) {
 	if !implementsLinkedListCargo(cargo) {
 		return stack, errors.New("cargo does not implement a supported interface")
@@ -40,6 +44,7 @@ func pushUtil(stack *node, cargo interface{}) (*node, error) {
 	}
 }
 
+// method to pop cargo from stack
 func (stack *Stack) Pop() (interface{}, error) {
 	var cargo interface{}
 	var err error
@@ -47,6 +52,7 @@ func (stack *Stack) Pop() (interface{}, error) {
 	return cargo, err
 }
 
+// utility function for stack popping
 func popUtil(stack *node) (interface{}, *node, error) {
 	if stack == nil {
 		return nil, nil, errors.New("empty stack")
@@ -55,14 +61,13 @@ func popUtil(stack *node) (interface{}, *node, error) {
 	return stack.cargo, stack.next, nil
 }
 
+//method to display stack contents
 func (stack Stack) PrintStack() {
 	aux := stack.first
-	fmt.Println("----------------------")
 	if aux == nil {
 		fmt.Println("empty list")
 	}
 	for i := aux; i != nil; i = i.next {
 		fmt.Println(*i)
 	}
-	fmt.Println("----------------------")
 }

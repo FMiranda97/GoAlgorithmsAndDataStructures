@@ -2,65 +2,17 @@ package collections
 
 import (
 	"errors"
-	"fmt"
 )
-
-func (tree BinaryTree) PrintTree() {
-	printTreeUtil(tree.root)
-}
-
-func printTreeUtil(tree *treeNode) {
-	if tree == nil {
-		return
-	}
-	printTreeUtil(tree.left)
-	fmt.Println(tree.cargo)
-	printTreeUtil(tree.right)
-}
-
-func printTree2DUtil(tree *treeNode, space int) {
-
-	// Base case
-	if tree == nil {
-		return
-	}
-
-	// Increase distance between levels
-	count := 8
-	space += count
-
-	// Process right child first
-	printTree2DUtil(tree.right, space)
-
-	// Print current node after space
-	// count
-	for i := count; i < space; i++ {
-		fmt.Print(" ")
-	}
-	fmt.Println(tree.cargo)
-	// Process left child
-	printTree2DUtil(tree.left, space)
-}
-
-// Wrapper over printTree2DUtil()
-func (tree BinaryTree) PrintTree2D() {
-	// Pass initial space count as 0
-	printTree2DUtil(tree.root, 0)
-}
 
 //todo count elements
 
-type treeNode struct {
-	cargo interface{}
-	left  *treeNode
-	right *treeNode
-}
-
+// simple binary tree object
 type BinaryTree struct {
 	root  *treeNode
 	count int32
 }
 
+// simple binary tree constructor
 func NewBinaryTree() BinaryTree {
 	return BinaryTree{
 		root:  nil,
@@ -68,6 +20,7 @@ func NewBinaryTree() BinaryTree {
 	}
 }
 
+// method to insert cargo into binary tree
 func (tree *BinaryTree) Insert(cargo interface{}) error {
 	var err error
 	tree.root, err = insertBinaryTreeUtil(tree.root, cargo)
@@ -77,6 +30,7 @@ func (tree *BinaryTree) Insert(cargo interface{}) error {
 	return err
 }
 
+// utility function for simple binary tree insertion
 func insertBinaryTreeUtil(tree *treeNode, cargo interface{}) (*treeNode, error) {
 	if !implementsLinkedListCargo(cargo) {
 		return tree, errors.New("cargo does not implement a supported interface")
@@ -100,4 +54,9 @@ func insertBinaryTreeUtil(tree *treeNode, cargo interface{}) (*treeNode, error) 
 		}
 	}
 	return tree, nil
+}
+
+// method to print simple binary tree contents
+func (tree BinaryTree) PrintTree() {
+	printTreeUtil(tree.root)
 }

@@ -2,21 +2,24 @@ package collections
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 )
 
-type cargoString interface {
-	GetKey() string
+// general purpose structure for linear collections
+type node struct {
+	cargo interface{}
+	next  *node
 }
 
-type cargoInt64 interface {
-	GetKey() int64
+// general purpose structure for binary tree collections
+type treeNode struct {
+	cargo interface{}
+	left  *treeNode
+	right *treeNode
 }
 
-type cargoInt interface {
-	GetKey() int
-}
-
+// compares keys of 2 cargos, return -1 if "this" less than "target", 0 if equal, 1 otherwise
 func comparator(this interface{}, target interface{}) (int8, error) {
 	if reflect.TypeOf(this) != reflect.TypeOf(target) {
 		return 0, errors.New("compared parameters implement different interfaces")
@@ -57,6 +60,7 @@ func comparator(this interface{}, target interface{}) (int8, error) {
 	}
 }
 
+// checks if passed cargo implements any of the required interfaces
 func implementsLinkedListCargo(cargo interface{}) bool {
 	if _, ok := cargo.(cargoString); ok {
 		return true
@@ -68,4 +72,45 @@ func implementsLinkedListCargo(cargo interface{}) bool {
 		return true
 	}
 	return false
+}
+
+// general purpose binary tree printing utility function
+func printTreeUtil(tree *treeNode) {
+	if tree == nil {
+		return
+	}
+	printTreeUtil(tree.left)
+	fmt.Println(tree.cargo)
+	printTreeUtil(tree.right)
+}
+
+// general purpose 2D printing utility function
+func printTree2DUtil(tree *treeNode, space int) {
+
+	// Base case
+	if tree == nil {
+		return
+	}
+
+	// Increase distance between levels
+	count := 8
+	space += count
+
+	// Process right child first
+	printTree2DUtil(tree.right, space)
+
+	// Print current node after space
+	// count
+	for i := count; i < space; i++ {
+		fmt.Print(" ")
+	}
+	fmt.Println(tree.cargo)
+	// Process left child
+	printTree2DUtil(tree.left, space)
+}
+
+// Wrapper over printTree2DUtil()
+func PrintTree2D(root *treeNode) {
+	// Pass initial space count as 0
+	printTree2DUtil(root, 0)
 }

@@ -9,17 +9,30 @@ import (
 //todo iterator
 //todo convert to array
 //todo construct from array
+//todo remove
 
-type node struct {
-	cargo interface{}
-	next  *node
-}
-
-type LinkedList struct {
+// linked list object
+type LinkedList struct { //todo check if should be lower case
 	count int32
 	first *node
 }
 
+// linked list constructor
+func NewList() LinkedList {
+	return LinkedList{
+		count: 0,
+		first: nil,
+	}
+}
+
+// method to insert cargo into linked list
+func (list *LinkedList) Insert(cargo interface{}) error {
+	var err error
+	list.first, err = insertLinkedListUtil(list.first, cargo)
+	return err
+}
+
+// utility function for linked list insertion
 func insertLinkedListUtil(list *node, cargo interface{}) (*node, error) {
 	// check viability
 	if !implementsLinkedListCargo(cargo) {
@@ -54,27 +67,13 @@ func insertLinkedListUtil(list *node, cargo interface{}) (*node, error) {
 	return list, nil
 }
 
+// method to display linked list contents
 func (list LinkedList) PrintList() {
 	aux := list.first
-	fmt.Println("----------------------")
 	if aux == nil {
 		fmt.Println("empty list")
 	}
 	for i := aux; i != nil; i = i.next {
 		fmt.Println(*i)
 	}
-	fmt.Println("----------------------")
-}
-
-func NewList() LinkedList {
-	return LinkedList{
-		count: 0,
-		first: nil,
-	}
-}
-
-func (list *LinkedList) Insert(cargo interface{}) error {
-	var err error
-	list.first, err = insertLinkedListUtil(list.first, cargo)
-	return err
 }
