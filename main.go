@@ -1,9 +1,10 @@
 package main
 
 import (
-	"../GoLinkedList/linkedList"
+	"./dataStructures"
 	"fmt"
 	"log"
+	"math/rand"
 )
 
 type pessoa struct {
@@ -20,17 +21,22 @@ func (p pessoa) GetKey() string { //object oriented function
 }*/
 
 func main() {
-	list := linkedList.NewList()
+	pilha := dataStructures.NewStack()
+	nome := ""
 	for i := 0; i < 5; i++ {
-		var p pessoa
-		fmt.Println("Inserir id:")
-		_, _ = fmt.Scanf("%d", &p.id)
-		fmt.Println("Inserir nome:")
-		_, _ = fmt.Scanf("%s", &p.name)
-		if err := linkedList.InsertList(&list, p); err != nil {
-			log.Println(err)
+		nome = nome + "a"
+		p := pessoa{
+			id:   rand.Int() % 91,
+			name: nome,
+		}
+		_ = pilha.Push(p)
+	}
+	pilha.PrintStack()
+	for i := 0; i < 6; i++ {
+		if c, err := pilha.Pop(); err == nil {
+			fmt.Println(c)
 		} else {
-			linkedList.PrintList(list)
+			log.Println(err)
 		}
 	}
 }
