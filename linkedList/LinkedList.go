@@ -97,6 +97,10 @@ func NewList() LinkedList {
 	return nil
 }
 
+func NewTree() BinaryTree {
+	return nil
+}
+
 func Push(stack *LinkedList, cargo interface{}) error {
 	if !implementsLinkedListCargo(cargo) {
 		return errors.New("cargo does not implement a supported interface")
@@ -130,4 +134,61 @@ func Pop(stack *LinkedList) (interface{}, error) {
 		*stack = (*stack).next
 	}
 	return cargo, nil
+}
+
+//todo check errors
+func InsertTree(tree BinaryTree, cargo interface{}) BinaryTree {
+	var newNode treeNode
+	newNode.cargo = cargo
+	//if insert at beginning
+	if tree == nil {
+		return &newNode
+	} else { // todo allow same key
+		comp, _ := comparator((*tree).cargo, newNode.cargo)
+		if comp < 0 {
+			tree.right = InsertTree(tree.right, cargo)
+		} else if comp > 0 {
+			tree.left = InsertTree(tree.left, cargo)
+		}
+	}
+	return tree
+}
+
+func PrintTree(tree BinaryTree) {
+	if tree == nil {
+		return
+	}
+	PrintTree(tree.left)
+	fmt.Println(tree.cargo)
+	PrintTree(tree.right)
+}
+
+func print2DUtil(tree BinaryTree, space int) {
+
+	// Base case
+	if tree == nil {
+		return
+	}
+
+	// Increase distance between levels
+	count := 8
+	space += count
+
+	// Process right child first
+	print2DUtil(tree.right, space)
+
+	// Print current node after space
+	// count
+	for i := count; i < space; i++ {
+		fmt.Print(" ")
+	}
+	fmt.Println(tree.cargo)
+	// Process left child
+	print2DUtil(tree.left, space)
+}
+
+// Wrapper over print2DUtil()
+func Print2D(tree BinaryTree) {
+	// Pass initial space count as 0
+	print2DUtil(tree, 0)
 }

@@ -13,10 +13,16 @@ type cargoLinkedListInt interface {
 }
 
 type LinkedList = *node
-
 type node struct {
 	cargo interface{}
 	next  *node
+}
+
+type BinaryTree = *treeNode
+type treeNode struct {
+	cargo interface{}
+	left  *treeNode
+	right *treeNode
 }
 
 func implementsLinkedListCargo(cargo interface{}) bool {
