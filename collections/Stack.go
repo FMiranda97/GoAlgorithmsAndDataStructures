@@ -1,4 +1,5 @@
-package dataStructures
+//package dataStructures provides constructs for storing data
+package collections
 
 import (
 	"errors"

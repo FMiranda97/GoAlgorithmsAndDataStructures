@@ -1,4 +1,4 @@
-package dataStructures
+package collections
 
 import (
 	"errors"
@@ -20,7 +20,7 @@ type LinkedList struct {
 	first *node
 }
 
-func insertUtil(list *node, cargo interface{}) (*node, error) {
+func insertLinkedListUtil(list *node, cargo interface{}) (*node, error) {
 	// check viability
 	if !implementsLinkedListCargo(cargo) {
 		return list, errors.New("cargo does not implement a supported interface")
@@ -75,6 +75,6 @@ func NewList() LinkedList {
 
 func (list *LinkedList) Insert(cargo interface{}) error {
 	var err error
-	list.first, err = insertUtil(list.first, cargo)
+	list.first, err = insertLinkedListUtil(list.first, cargo)
 	return err
 }

@@ -1,4 +1,4 @@
-package linkedList
+package collections
 
 import (
 	"errors"
@@ -70,14 +70,14 @@ func NewBinaryTree() BinaryTree {
 
 func (tree *BinaryTree) Insert(cargo interface{}) error {
 	var err error
-	tree.root, err = insertUtil(tree.root, cargo)
+	tree.root, err = insertBinaryTreeUtil(tree.root, cargo)
 	if err == nil {
 		tree.count++
 	}
 	return err
 }
 
-func insertUtil(tree *treeNode, cargo interface{}) (*treeNode, error) {
+func insertBinaryTreeUtil(tree *treeNode, cargo interface{}) (*treeNode, error) {
 	if !implementsLinkedListCargo(cargo) {
 		return tree, errors.New("cargo does not implement a supported interface")
 	}
@@ -92,9 +92,9 @@ func insertUtil(tree *treeNode, cargo interface{}) (*treeNode, error) {
 			return tree, err
 		}
 		if comp < 0 {
-			tree.right, err = insertUtil(tree.right, cargo)
+			tree.right, err = insertBinaryTreeUtil(tree.right, cargo)
 		} else if comp > 0 {
-			tree.left, err = insertUtil(tree.left, cargo)
+			tree.left, err = insertBinaryTreeUtil(tree.left, cargo)
 		} else {
 			return tree, errors.New("element with this key already exists")
 		}
