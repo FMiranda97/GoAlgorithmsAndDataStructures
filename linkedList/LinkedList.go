@@ -46,32 +46,30 @@ func comparator(this interface{}, target interface{}) (int8, error) {
 	}
 }
 
-func InsertList(list *LinkedList, cargo interface{}) error {
+func insertList(list *node, cargo interface{}) (*node, error) {
 	// check viability
 	if !implementsLinkedListCargo(cargo) {
-		return errors.New("cargo does not implement a supported interface")
+		return list, errors.New("cargo does not implement a supported interface")
 	}
 	var newNode node
 	newNode.cargo = cargo
 	//if insert at beginning
-	if *list == nil {
-		*list = &newNode
-		return nil
+	if list == nil {
+		return &newNode, nil
 	} else if comp, err := comparator((*list).cargo, newNode.cargo); comp > 0 || err != nil {
 		if err == nil {
-			newNode.next = *list
-			*list = &newNode
-			return nil
+			newNode.next = list
+			return &newNode, nil
 		} else {
-			return err
+			return list, err
 		}
 	}
 	//insert in order
-	var i LinkedList
-	for i = *list; i.next != nil; i = i.next {
+	var i *node
+	for i = list; i.next != nil; i = i.next {
 		comp, err := comparator(i.next.cargo, newNode.cargo)
 		if err != nil {
-			return err
+			return list, err
 		}
 		if comp > 0 {
 			break
@@ -79,25 +77,36 @@ func InsertList(list *LinkedList, cargo interface{}) error {
 	}
 	newNode.next = i.next
 	i.next = &newNode
-	return nil
+	return list, nil
 }
 
-func PrintList(list LinkedList) {
+func (list RealLinkedList) PrintList() {
+	aux := list.first
 	fmt.Println("----------------------")
-	if list == nil {
+	if aux == nil {
 		fmt.Println("empty list")
 	}
-	for i := list; i != nil; i = i.next {
+	for i := aux; i != nil; i = i.next {
 		fmt.Println(*i)
 	}
 	fmt.Println("----------------------")
 }
 
-func NewList() LinkedList {
-	return nil
+func NewList() RealLinkedList {
+	return RealLinkedList{
+		count: 0,
+		first: nil,
+		last:  nil,
+	}
 }
 
-func Push(stack *LinkedList, cargo interface{}) error {
+func (list *RealLinkedList) Insert(cargo interface{}) error {
+	var err error
+	list.first, err = insertList(list.first, cargo)
+	return err
+}
+
+func Push(stack **node, cargo interface{}) error {
 	if !implementsLinkedListCargo(cargo) {
 		return errors.New("cargo does not implement a supported interface")
 	}
@@ -118,7 +127,7 @@ func Push(stack *LinkedList, cargo interface{}) error {
 	return nil
 }
 
-func Pop(stack *LinkedList) (interface{}, error) {
+func Pop(stack **node) (interface{}, error) {
 	if *stack == nil {
 		return nil, errors.New("empty stack")
 	}

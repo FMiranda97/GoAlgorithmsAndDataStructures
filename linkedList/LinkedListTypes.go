@@ -13,10 +13,15 @@ type cargoLinkedListInt interface {
 }
 
 type LinkedList = *node
-
 type node struct {
 	cargo interface{}
 	next  *node
+}
+
+type RealLinkedList struct {
+	count int32
+	first *node
+	last  *node
 }
 
 func implementsLinkedListCargo(cargo interface{}) bool {
