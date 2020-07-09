@@ -60,20 +60,6 @@ func comparator(this interface{}, target interface{}) (int8, error) {
 	}
 }
 
-// checks if passed cargo implements any of the required interfaces
-func implementsLinkedListCargo(cargo interface{}) bool {
-	if _, ok := cargo.(cargoString); ok {
-		return true
-	}
-	if _, ok := cargo.(cargoInt); ok {
-		return true
-	}
-	if _, ok := cargo.(cargoInt64); ok {
-		return true
-	}
-	return false
-}
-
 // general purpose binary tree printing utility function
 func printTreeUtil(tree *treeNode) {
 	if tree == nil {
