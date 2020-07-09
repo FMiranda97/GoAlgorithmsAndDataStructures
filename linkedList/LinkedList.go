@@ -46,11 +46,8 @@ func comparator(this interface{}, target interface{}) (int8, error) {
 	}
 }
 
-func InsertList(list *LinkedList, cargo interface{}) error {
+func Insert(list *LinkedList, cargo interface{}) error {
 	// check viability
-	/*if *list != nil && reflect.TypeOf((*list).cargo) != reflect.TypeOf(cargo) {
-		return errors.New("cargo is not of same type as contents previously inserted")
-	}*/
 	if !implementsLinkedListCargo(cargo) {
 		return errors.New("cargo does not implement a supported interface")
 	}
@@ -60,8 +57,8 @@ func InsertList(list *LinkedList, cargo interface{}) error {
 	if *list == nil {
 		*list = &newNode
 		return nil
-	} else if comp, err := comparator((*list).cargo, newNode.cargo); comp > 0 {
-		if err != nil {
+	} else if comp, err := comparator((*list).cargo, newNode.cargo); comp > 0 || err != nil {
+		if err == nil {
 			newNode.next = *list
 			*list = &newNode
 			return nil
@@ -83,6 +80,18 @@ func InsertList(list *LinkedList, cargo interface{}) error {
 	newNode.next = i.next
 	i.next = &newNode
 	return nil
+}
+
+func Iterator(list LinkedList) func() interface{} {
+
+	return func() interface{} {
+		if list == nil {
+			return nil
+		}
+		aux := list.cargo
+		list = list.next
+		return aux
+	}
 }
 
 func PrintList(list LinkedList) {
