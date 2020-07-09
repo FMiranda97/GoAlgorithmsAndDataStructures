@@ -1,4 +1,4 @@
-package main
+package linkedList
 
 import (
 	"errors"
@@ -46,13 +46,7 @@ func comparator(this interface{}, target interface{}) (int8, error) {
 	}
 }
 
-func implementsLinkedListCargo(cargo interface{}) bool {
-	_, ok := cargo.(linkedListCargoString)
-	_, ok2 := cargo.(linkedListCargoInt)
-	return ok || ok2
-}
-
-func insertList(list *linkedList, cargo interface{}) error {
+func InsertList(list *LinkedList, cargo interface{}) error {
 	// check viability
 	if *list != nil && reflect.TypeOf((*list).cargo) != reflect.TypeOf(cargo) {
 		return errors.New("cargo is not of same type as contents previously inserted")
@@ -76,7 +70,7 @@ func insertList(list *linkedList, cargo interface{}) error {
 		}
 	}
 	//insert in order
-	var i linkedList
+	var i LinkedList
 	for i = *list; i.next != nil; i = i.next {
 		comp, err := comparator(i.next.cargo, newNode.cargo)
 		if err != nil {
@@ -91,10 +85,14 @@ func insertList(list *linkedList, cargo interface{}) error {
 	return nil
 }
 
-func printList(list linkedList) {
+func PrintList(list LinkedList) {
 	fmt.Println("----------------------")
 	for i := list; i != nil; i = i.next {
 		fmt.Println(*i)
 	}
 	fmt.Println("----------------------")
+}
+
+func NewList() LinkedList {
+	return nil
 }
