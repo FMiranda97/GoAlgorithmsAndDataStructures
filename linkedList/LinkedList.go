@@ -48,9 +48,6 @@ func comparator(this interface{}, target interface{}) (int8, error) {
 
 func InsertList(list *LinkedList, cargo interface{}) error {
 	// check viability
-	/*if *list != nil && reflect.TypeOf((*list).cargo) != reflect.TypeOf(cargo) {
-		return errors.New("cargo is not of same type as contents previously inserted")
-	}*/
 	if !implementsLinkedListCargo(cargo) {
 		return errors.New("cargo does not implement a supported interface")
 	}
@@ -60,8 +57,8 @@ func InsertList(list *LinkedList, cargo interface{}) error {
 	if *list == nil {
 		*list = &newNode
 		return nil
-	} else if comp, err := comparator((*list).cargo, newNode.cargo); comp > 0 {
-		if err != nil {
+	} else if comp, err := comparator((*list).cargo, newNode.cargo); comp > 0 || err != nil {
+		if err == nil {
 			newNode.next = *list
 			*list = &newNode
 			return nil
@@ -87,6 +84,9 @@ func InsertList(list *LinkedList, cargo interface{}) error {
 
 func PrintList(list LinkedList) {
 	fmt.Println("----------------------")
+	if list == nil {
+		fmt.Println("empty list")
+	}
 	for i := list; i != nil; i = i.next {
 		fmt.Println(*i)
 	}
@@ -95,4 +95,39 @@ func PrintList(list LinkedList) {
 
 func NewList() LinkedList {
 	return nil
+}
+
+func Push(stack *LinkedList, cargo interface{}) error {
+	if !implementsLinkedListCargo(cargo) {
+		return errors.New("cargo does not implement a supported interface")
+	}
+	var newNode node
+	newNode.cargo = cargo
+	if *stack == nil {
+		*stack = &newNode
+		return nil
+	} else if comp, err := comparator((*stack).cargo, newNode.cargo); comp != 0 {
+		if err == nil {
+			newNode.next = *stack
+			*stack = &newNode
+			return nil
+		} else {
+			return err
+		}
+	}
+	return nil
+}
+
+func Pop(stack *LinkedList) (interface{}, error) {
+	if *stack == nil {
+		return nil, errors.New("empty stack")
+	}
+	//Stack has only 1 element
+	cargo := (*stack).cargo
+	if (*stack).next == nil {
+		*stack = nil
+	} else {
+		*stack = (*stack).next
+	}
+	return cargo, nil
 }
