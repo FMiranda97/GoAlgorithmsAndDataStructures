@@ -29,19 +29,15 @@ func (stack *Stack) Push(cargo interface{}) error {
 
 // utility function for stack pushing
 func pushUtil(stack *node, cargo interface{}) (*node, error) {
-	if !implementsLinkedListCargo(cargo) {
-		return stack, errors.New("cargo does not implement a supported interface")
-	}
 	var newNode node
 	newNode.cargo = cargo
 	if stack == nil {
 		return &newNode, nil
-	} else if _, err := comparator((*stack).cargo, newNode.cargo); err == nil {
+	} else {
 		newNode.next = stack
 		return &newNode, nil
-	} else {
-		return stack, err
 	}
+
 }
 
 // method to pop cargo from stack

@@ -5,12 +5,11 @@ import (
 	"fmt"
 )
 
-//todo get errors to print stack traces
-
 // linked list object
 type LinkedList struct {
 	count int
 	first *node
+	last  *node
 }
 
 // linked list constructor
@@ -18,52 +17,65 @@ func NewLinkedList() LinkedList {
 	return LinkedList{
 		count: 0,
 		first: nil,
+		last:  nil,
 	}
 }
 
-// method to insert cargo into linked list
-func (list *LinkedList) Insert(cargo interface{}) error {
-	var err error
-	list.first, err = insertLinkedListUtil(list.first, cargo)
-	if err == nil {
-		list.count++
+// method to insert cargo at end of linked list
+func (list *LinkedList) Append(cargo interface{}) {
+	newNode := node{
+		cargo: cargo,
+		next:  nil,
 	}
-	return err
+	if list.last != nil {
+		list.last.next = &newNode
+		list.last = &newNode
+	} else {
+		list.first = &newNode
+		list.last = &newNode
+	}
+	list.count++
 }
 
-// utility function for linked list insertion
-func insertLinkedListUtil(list *node, cargo interface{}) (*node, error) {
-	// check viability
-	if !implementsLinkedListCargo(cargo) {
-		return list, errors.New("cargo does not implement a supported interface")
+// method to insert cargo at beginning of linked list
+func (list *LinkedList) Prepend(cargo interface{}) {
+	newNode := node{
+		cargo: cargo,
+		next:  nil,
 	}
-	var newNode node
-	newNode.cargo = cargo
-	//if insert at beginning
-	if list == nil {
-		return &newNode, nil
-	} else if comp, err := comparator((*list).cargo, newNode.cargo); comp > 0 || err != nil {
-		if err == nil {
-			newNode.next = list
-			return &newNode, nil
-		} else {
-			return list, err
-		}
+	newNode.next = list.first
+	list.first = &newNode
+	if newNode.next == nil {
+		list.last = &newNode
 	}
-	//insert in order
-	var i *node
-	for i = list; i.next != nil; i = i.next {
-		comp, err := comparator(i.next.cargo, newNode.cargo)
-		if err != nil {
-			return list, err
-		}
-		if comp > 0 {
-			break
-		}
+	list.count++
+}
+
+// method to insert cargo into linked list at a given position
+func (list *LinkedList) Insert(cargo interface{}, index int) error {
+	if list.count < index {
+		return errors.New("index out of bounds")
 	}
-	newNode.next = i.next
-	i.next = &newNode
-	return list, nil
+	newNode := node{
+		cargo: cargo,
+		next:  nil,
+	}
+	if index == 0 {
+		newNode.next = list.first
+		list.first = &newNode
+	} else {
+		aux := list.first
+		for i := 1; i < index; i++ {
+			aux = aux.next
+		}
+		newNode.next = aux.next
+		aux.next = &newNode
+	}
+	if newNode.next == nil {
+		list.last = &newNode
+	}
+	list.count++
+	return nil
 }
 
 // removes cargo from linked list at index
@@ -73,12 +85,18 @@ func (list *LinkedList) Remove(index int) error {
 	}
 	if index == 0 {
 		list.first = list.first.next
+		if list.first == nil {
+			list.last = nil
+		}
 	} else {
 		aux := list.first
 		for i := 1; i < index; i++ {
 			aux = aux.next
 		}
 		aux.next = aux.next.next
+		if aux.next == nil {
+			list.last = nil
+		}
 	}
 	list.count--
 	return nil
@@ -93,6 +111,23 @@ func (list LinkedList) PrintList() {
 	for i := aux; i != nil; i = i.next {
 		fmt.Println(*i)
 	}
+}
+
+// method to retrieve cargo at a given position
+// should not be used to iterate
+func (list *LinkedList) Get(index int) (interface{}, error) {
+	if list.count <= index {
+		return nil, errors.New("index out of bounds")
+	}
+	aux := list.first
+	for i := 0; i < index; i++ {
+		aux = aux.next
+	}
+	return aux.cargo, nil
+}
+
+func (list *LinkedList) Len() int {
+	return list.count
 }
 
 // returns an iterator function. Each call to the return function returns the next element
