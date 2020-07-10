@@ -5,14 +5,11 @@ import (
 	"fmt"
 )
 
-//TODO count elements
-//todo convert to array
-//todo construct from array
-//todo remove
+//todo get errors to print stack traces
 
 // linked list object
-type LinkedList struct { //todo check if should be lower case
-	count int32
+type LinkedList struct {
+	count int
 	first *node
 }
 
@@ -69,6 +66,37 @@ func insertLinkedListUtil(list *node, cargo interface{}) (*node, error) {
 	return list, nil
 }
 
+// removes cargo from linked list at index
+func (list *LinkedList) Remove(index int) error {
+	if list.count <= index {
+		return errors.New("index out of bounds")
+	}
+	if index == 0 {
+		list.first = list.first.next
+	} else {
+		aux := list.first
+		for i := 1; i < index; i++ {
+			aux = aux.next
+		}
+		aux.next = aux.next.next
+	}
+	list.count--
+	return nil
+}
+
+// method to display linked list contents
+func (list LinkedList) PrintList() {
+	aux := list.first
+	if aux == nil {
+		fmt.Println("empty list")
+	}
+	for i := aux; i != nil; i = i.next {
+		fmt.Println(*i)
+	}
+}
+
+// returns an iterator function. Each call to the return function returns the next element
+// once last element is reached returns nil forever
 func (list *LinkedList) GetIterator() func() interface{} {
 	elem := list.first
 	return func() interface{} {
@@ -81,13 +109,12 @@ func (list *LinkedList) GetIterator() func() interface{} {
 	}
 }
 
-// method to display linked list contents
-func (list LinkedList) PrintList() {
-	aux := list.first
-	if aux == nil {
-		fmt.Println("empty list")
+// builds and returns an array with cargos present in LinkedList
+func (list *LinkedList) GetArray() interface{} {
+	arr := make([]interface{}, list.count)
+	it := list.GetIterator()
+	for elem, i := it(), 0; elem != nil; elem, i = it(), i+1 {
+		arr[i] = elem
 	}
-	for i := aux; i != nil; i = i.next {
-		fmt.Println(*i)
-	}
+	return arr
 }

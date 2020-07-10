@@ -9,7 +9,7 @@ import (
 // simple binary tree object
 type BinaryTree struct {
 	root  *treeNode
-	count int32
+	count int
 }
 
 // simple binary tree constructor

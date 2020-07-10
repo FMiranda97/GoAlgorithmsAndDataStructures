@@ -8,7 +8,7 @@ import (
 
 // stack object
 type Stack struct {
-	count int32
+	count int
 	first *node
 }
 
