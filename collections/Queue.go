@@ -5,6 +5,8 @@ import (
 	"fmt"
 )
 
+//todo verify documentation
+
 // linked list object
 type Queue struct {
 	count int
@@ -37,7 +39,7 @@ func (queue *Queue) Append(cargo interface{}) {
 	queue.count++
 }
 
-// method to pop cargo from stack
+// method to pop cargo from queue
 func (queue *Queue) Pop() (cargo interface{}, err error) {
 	if queue.count == 0 {
 		return nil, errors.New("empty queue")

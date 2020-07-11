@@ -1,0 +1,98 @@
+package collections
+
+import (
+	"errors"
+	"fmt"
+)
+
+// linked list object
+type Deque struct {
+	count int
+	first *node
+	last  *node
+}
+
+// linked list constructor
+func NewDeque() Deque {
+	return Deque{
+		count: 0,
+		first: nil,
+		last:  nil,
+	}
+}
+
+// method to insert cargo at end of linked list
+func (deque *Deque) Append(cargo interface{}) {
+	newNode := node{
+		cargo: cargo,
+		next:  nil,
+	}
+	if deque.last != nil {
+		deque.last.next = &newNode
+		deque.last = &newNode
+	} else {
+		deque.first = &newNode
+		deque.last = &newNode
+	}
+	deque.count++
+}
+
+// method to insert cargo at beginning of linked list
+func (deque *Deque) Prepend(cargo interface{}) {
+	newNode := node{
+		cargo: cargo,
+		next:  nil,
+	}
+	newNode.next = deque.first
+	deque.first = &newNode
+	if newNode.next == nil {
+		deque.last = &newNode
+	}
+	deque.count++
+}
+
+// method to pop cargo from deque
+func (deque *Deque) Pop() (cargo interface{}, err error) {
+	if deque.count == 0 {
+		return nil, errors.New("empty deque")
+	}
+	cargo = deque.first.cargo
+	deque.first = deque.first.next
+	if deque.first == nil {
+		deque.last = nil
+	}
+	deque.count--
+	return cargo, nil
+}
+
+// method to pop cargo from deque
+func (deque *Deque) PopEnd() (cargo interface{}, err error) {
+	if deque.count == 0 {
+		return nil, errors.New("empty deque")
+	}
+	cargo = deque.last.cargo
+	if deque.first == deque.last {
+		deque.first = nil
+		deque.last = nil
+	} else {
+		aux := deque.first
+		for aux.next != deque.last {
+			aux = aux.next
+		}
+		deque.last = aux
+		aux.next = nil
+	}
+	deque.count--
+	return cargo, nil
+}
+
+// method to display linked list contents
+func (deque Deque) PrintDeque() {
+	aux := deque.first
+	if aux == nil {
+		fmt.Println("empty deque")
+	}
+	for i := aux; i != nil; i = i.next {
+		fmt.Println(*i)
+	}
+}
