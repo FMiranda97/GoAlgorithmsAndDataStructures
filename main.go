@@ -1,70 +1,37 @@
 package main
 
 import (
-	. "LinkedList/collections"
+	. "./sortAlgo"
 	"fmt"
-	"log"
+	"math/rand"
+	"time"
 )
 
 type pessoa struct {
-	id   int
-	name string
+	id int
 }
 
-func (p pessoa) GetKey() string { //object oriented function
-	return p.name
+func (p pessoa) CompareTo(t interface{}) int8 {
+	target := t.(pessoa)
+	if p.id < target.id {
+		return -1
+	} else if p.id > target.id {
+		return 1
+	} else {
+		return 0
+	}
 }
-
-/*func (p pessoa) GetKey() int { //object oriented function
-	return p.id
-}*/
 
 func main() {
-	/*file, err := os.Open("LinkedList/Inputs/NameId_10.txt")
-	if err != nil {
-		log.Println("File reading error", err)
-		return
-	}
-	defer file.Close()
-	linha := bufio.NewScanner(file)
-	for linha.Scan() {
-
-	}
-	*/
-
-	list := NewBinaryTree()
-	var opcao int
-	for i := 0; i < 10; i++ {
-		var p pessoa
-		fmt.Println("1 - Inserir")
-		fmt.Println("2 - Remover")
-		_, _ = fmt.Scanf("%d", &opcao)
-		switch opcao {
-		case 1:
-			fmt.Println("Inserir id:")
-			_, _ = fmt.Scanf("%d", &p.id)
-			fmt.Println("Inserir nome:")
-			_, _ = fmt.Scanf("%s", &p.name)
-			if err := list.Insert(p); err != nil {
-				log.Println(err)
-			} else {
-				list.PrintTree()
-				fmt.Println("-----------")
-				list.PrintTree2D()
-				fmt.Println("-----------")
-			}
-			break
-		case 2:
-			/*info, err := linkedList.Pop(&list)
-			if  err != nil {
-				log.Println(err)
-			} else {
-				fmt.Println(info)
-				linkedList.PrintList(list)
-			}*/
-			break
-		default:
-			break
+	const size = 16
+	var p, p2 [size]pessoa
+	for i := 0; i < size; i++ {
+		p[i] = pessoa{
+			id: rand.Int() % (size * 100),
 		}
 	}
+	copy(p2[:], p[:])
+	start := time.Now()
+	_ = MergeSortConcurrent(p2[:])
+	fmt.Println("Merge sort time:", time.Since(start))
 }

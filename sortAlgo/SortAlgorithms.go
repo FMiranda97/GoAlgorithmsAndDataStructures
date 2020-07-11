@@ -132,6 +132,7 @@ func mergeSortConcurrent(slice reflect.Value, res chan reflect.Value) {
 	}
 }
 
+// utility function to perform merge in merge sort process using concurrency
 func mergeConcurrent(left reflect.Value, right reflect.Value) reflect.Value {
 	result := reflect.MakeSlice(left.Type(), left.Len()+right.Len(), left.Len()+right.Len()) // todo check type
 	l, r, i := 0, 0, 0
