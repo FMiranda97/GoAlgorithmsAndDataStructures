@@ -12,10 +12,11 @@ type node struct {
 
 // general purpose structure for binary tree collections
 type treeNode struct {
-	key   string
-	cargo interface{}
-	left  *treeNode
-	right *treeNode
+	key    string
+	cargo  interface{}
+	left   *treeNode
+	right  *treeNode
+	parent *treeNode
 }
 
 // general purpose binary tree printing utility function
@@ -47,7 +48,12 @@ func printTree2DUtil(tree *treeNode, space int, spacing int) {
 	for i := spacing; i < space; i++ {
 		fmt.Print(" ")
 	}
-	fmt.Println(tree.cargo)
+	if tree.parent == nil {
+		fmt.Println(tree.cargo, nil)
+	} else {
+		fmt.Println(tree.cargo, tree.parent.cargo)
+	}
 	// Process left child
+
 	printTree2DUtil(tree.left, space, spacing)
 }
