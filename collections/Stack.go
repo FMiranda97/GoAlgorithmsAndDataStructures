@@ -44,12 +44,12 @@ func pushUtil(stack *node, cargo interface{}) (*node, error) {
 func (stack *Stack) Pop() (interface{}, error) {
 	var cargo interface{}
 	var err error
-	cargo, stack.first, err = popUtil(stack.first)
+	cargo, stack.first, err = popStackUtil(stack.first)
 	return cargo, err
 }
 
 // utility function for stack popping
-func popUtil(stack *node) (interface{}, *node, error) {
+func popStackUtil(stack *node) (interface{}, *node, error) {
 	if stack == nil {
 		return nil, nil, errors.New("empty stack")
 	}
