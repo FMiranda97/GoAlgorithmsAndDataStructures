@@ -21,21 +21,20 @@ func NewStack() Stack {
 }
 
 // method to push cargo into stack
-func (stack *Stack) Push(cargo interface{}) error {
-	var err error
-	stack.first, err = pushUtil(stack.first, cargo)
-	return err
+func (stack *Stack) Push(cargo interface{}) {
+	stack.first = pushUtil(stack.first, cargo)
+	stack.count++
 }
 
 // utility function for stack pushing
-func pushUtil(stack *node, cargo interface{}) (*node, error) {
+func pushUtil(stack *node, cargo interface{}) *node {
 	var newNode node
 	newNode.cargo = cargo
 	if stack == nil {
-		return &newNode, nil
+		return &newNode
 	} else {
 		newNode.next = stack
-		return &newNode, nil
+		return &newNode
 	}
 
 }
@@ -45,6 +44,9 @@ func (stack *Stack) Pop() (interface{}, error) {
 	var cargo interface{}
 	var err error
 	cargo, stack.first, err = popStackUtil(stack.first)
+	if err == nil {
+		stack.count--
+	}
 	return cargo, err
 }
 
@@ -57,7 +59,12 @@ func popStackUtil(stack *node) (interface{}, *node, error) {
 	return stack.cargo, stack.next, nil
 }
 
-//method to display stack contents
+// method to return count of elements in stack
+func (stack Stack) Len() int {
+	return stack.count
+}
+
+// method to display stack contents
 func (stack Stack) PrintStack() {
 	aux := stack.first
 	if aux == nil {

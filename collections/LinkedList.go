@@ -126,6 +126,7 @@ func (list *LinkedList) Get(index int) (interface{}, error) {
 	return aux.cargo, nil
 }
 
+// method to return count of elements in linked list
 func (list *LinkedList) Len() int {
 	return list.count
 }

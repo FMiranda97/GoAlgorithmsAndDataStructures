@@ -5,16 +5,14 @@ import (
 	"fmt"
 )
 
-//todo verify documentation
-
-// linked list object
+// queue object
 type Queue struct {
 	count int
 	first *node
 	last  *node
 }
 
-// linked list constructor
+// queue constructor
 func NewQueue() Queue {
 	return Queue{
 		count: 0,
@@ -23,7 +21,7 @@ func NewQueue() Queue {
 	}
 }
 
-// method to insert cargo at end of linked list
+// method to insert cargo into queue
 func (queue *Queue) Append(cargo interface{}) {
 	newNode := node{
 		cargo: cargo,
@@ -53,7 +51,7 @@ func (queue *Queue) Pop() (cargo interface{}, err error) {
 	return cargo, nil
 }
 
-// method to display linked list contents
+// method to display queue contents
 func (queue Queue) PrintQueue() {
 	aux := queue.first
 	if aux == nil {
@@ -64,6 +62,7 @@ func (queue Queue) PrintQueue() {
 	}
 }
 
+// method to return count of elements in queue
 func (queue *Queue) Len() int {
 	return queue.count
 }

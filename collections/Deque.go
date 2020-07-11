@@ -5,14 +5,14 @@ import (
 	"fmt"
 )
 
-// linked list object
+// deque object
 type Deque struct {
 	count int
 	first *node
 	last  *node
 }
 
-// linked list constructor
+// deque constructor
 func NewDeque() Deque {
 	return Deque{
 		count: 0,
@@ -21,7 +21,7 @@ func NewDeque() Deque {
 	}
 }
 
-// method to insert cargo at end of linked list
+// method to insert cargo at end of deque
 func (deque *Deque) Append(cargo interface{}) {
 	newNode := node{
 		cargo: cargo,
@@ -37,7 +37,7 @@ func (deque *Deque) Append(cargo interface{}) {
 	deque.count++
 }
 
-// method to insert cargo at beginning of linked list
+// method to insert cargo at beginning of deque
 func (deque *Deque) Prepend(cargo interface{}) {
 	newNode := node{
 		cargo: cargo,
@@ -51,7 +51,7 @@ func (deque *Deque) Prepend(cargo interface{}) {
 	deque.count++
 }
 
-// method to pop cargo from deque
+// method to pop cargo from deque's front
 func (deque *Deque) Pop() (cargo interface{}, err error) {
 	if deque.count == 0 {
 		return nil, errors.New("empty deque")
@@ -65,7 +65,7 @@ func (deque *Deque) Pop() (cargo interface{}, err error) {
 	return cargo, nil
 }
 
-// method to pop cargo from deque
+// method to pop cargo from deque's back
 func (deque *Deque) PopEnd() (cargo interface{}, err error) {
 	if deque.count == 0 {
 		return nil, errors.New("empty deque")
@@ -86,7 +86,12 @@ func (deque *Deque) PopEnd() (cargo interface{}, err error) {
 	return cargo, nil
 }
 
-// method to display linked list contents
+// method to return count of elements in deque
+func (deque Deque) Len() int {
+	return deque.count
+}
+
+// method to display deque contents
 func (deque Deque) PrintDeque() {
 	aux := deque.first
 	if aux == nil {

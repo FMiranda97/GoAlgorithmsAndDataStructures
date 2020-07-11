@@ -4,6 +4,8 @@ import (
 	"errors"
 )
 
+//todo verify documentation
+
 // simple binary tree object
 type BinaryTreeMap struct {
 	root  *treeNode
