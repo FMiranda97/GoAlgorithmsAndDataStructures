@@ -12,6 +12,7 @@ type Sortable interface {
 	CompareTo(interface{}) int8
 }
 
+// utility function to check if data types are correct and returning function to swap elements
 func sortSetup(arr interface{}) (reflect.Value, func(int, int), error) {
 	if reflect.TypeOf(arr).Kind() == reflect.Slice {
 		slice := reflect.ValueOf(arr)
@@ -21,10 +22,12 @@ func sortSetup(arr interface{}) (reflect.Value, func(int, int), error) {
 	return reflect.Value{}, nil, errors.New("argument is not pointer to slice or does not implement required interface")
 }
 
+// utility function to return generic element in slice
 func get(index int, t reflect.Value) Sortable {
 	return t.Index(index).Interface().(Sortable)
 }
 
+// function to start bubble sort in array
 func BubbleSort(arr interface{}) (err error) { // why does this work
 	if slice, swap, err := sortSetup(arr); err == nil {
 		for i := 0; i < slice.Len()-1; i++ {
@@ -39,6 +42,7 @@ func BubbleSort(arr interface{}) (err error) { // why does this work
 	return err
 }
 
+// function to start merge sort in array
 func MergeSort(arr interface{}) (err error) { // why does this work
 	if slice, _, err := sortSetup(arr); err == nil {
 		mergeSort(0, slice.Len()-1, slice)
@@ -46,6 +50,7 @@ func MergeSort(arr interface{}) (err error) { // why does this work
 	return err
 }
 
+// utility function to perform merge sort in array
 func mergeSort(l int, r int, slice reflect.Value) {
 	if l < r {
 		m := l + (r-l)/2
@@ -55,6 +60,7 @@ func mergeSort(l int, r int, slice reflect.Value) {
 	}
 }
 
+// function to start merge sort in array using concurrency
 func MergeSortConcurrent(arr interface{}) (err error) { // why does this work
 	if slice, _, err := sortSetup(arr); err == nil {
 		mergeSortConcurrent(0, slice.Len()-1, slice)
@@ -62,6 +68,7 @@ func MergeSortConcurrent(arr interface{}) (err error) { // why does this work
 	return err
 }
 
+// utility function to perform merge sort in array using concurrency
 func mergeSortConcurrent(l int, r int, slice reflect.Value) {
 	if l < r {
 		m := l + (r-l)/2
@@ -80,6 +87,7 @@ func mergeSortConcurrent(l int, r int, slice reflect.Value) {
 	}
 }
 
+// utility function to perform merge in merge sort process
 func merge(l int, m int, r int, slice reflect.Value) {
 	n1 := m - l + 1
 	n2 := r - m
