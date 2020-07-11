@@ -3,7 +3,6 @@ package sortAlgo
 import (
 	"errors"
 	"reflect"
-	"sync"
 )
 
 // interface that must be implemented by elements of slices using this package
@@ -52,37 +51,10 @@ func MergeSort(arr interface{}) (err error) { // why does this work
 
 // utility function to perform merge sort in array
 func mergeSort(l int, r int, slice reflect.Value) {
-	if l < r {
+	if r != l {
 		m := l + (r-l)/2
 		mergeSort(l, m, slice)
 		mergeSort(m+1, r, slice)
-		merge(l, m, r, slice)
-	}
-}
-
-// function to start merge sort in array using concurrency
-func MergeSortConcurrent(arr interface{}) (err error) { // why does this work
-	if slice, _, err := sortSetup(arr); err == nil {
-		mergeSortConcurrent(0, slice.Len()-1, slice)
-	}
-	return err
-}
-
-// utility function to perform merge sort in array using concurrency
-func mergeSortConcurrent(l int, r int, slice reflect.Value) {
-	if l < r {
-		m := l + (r-l)/2
-		var wg sync.WaitGroup
-		wg.Add(2)
-		func() {
-			go mergeSort(l, m, slice)
-			wg.Done()
-		}()
-		func() {
-			go mergeSort(m+1, r, slice)
-			wg.Done()
-		}()
-		wg.Wait()
 		merge(l, m, r, slice)
 	}
 }
@@ -119,12 +91,69 @@ func merge(l int, m int, r int, slice reflect.Value) {
 		i++
 		k++
 	}
-
-	/* Copy the remaining elements of R[], if there
-	   are any */
 	for j < n2 {
 		slice.Index(k).Set(reflect.ValueOf(get(j, right)))
 		j++
 		k++
 	}
+}
+
+// function to start merge sort in array using concurrency
+func MergeSortConcurrent(arr interface{}) (err error) { // why does this work
+	if slice, _, err := sortSetup(arr); err == nil {
+		final := make(chan reflect.Value)
+		defer close(final)
+		go mergeSortConcurrent(slice, final)
+		res := <-final
+		for i := 0; i < slice.Len(); i++ {
+			slice.Index(i).Set(reflect.ValueOf(get(i, res)))
+		}
+	}
+	return err
+}
+
+// utility function to perform merge sort in array using concurrency
+func mergeSortConcurrent(slice reflect.Value, res chan reflect.Value) {
+	if slice.Len() == 1 {
+		res <- slice
+	} else {
+		m := slice.Len() / 2
+		var left, right reflect.Value
+		leftC, rightC := make(chan reflect.Value), make(chan reflect.Value)
+		defer close(leftC)
+		defer close(rightC)
+		leftSlc := slice.Slice(0, m)
+		go mergeSortConcurrent(leftSlc, leftC)
+		rightSlc := slice.Slice(m, slice.Len())
+		go mergeSortConcurrent(rightSlc, rightC)
+		left = <-leftC
+		right = <-rightC
+		res <- mergeConcurrent(left, right)
+	}
+}
+
+func mergeConcurrent(left reflect.Value, right reflect.Value) reflect.Value {
+	result := reflect.MakeSlice(left.Type(), left.Len()+right.Len(), left.Len()+right.Len()) // todo check type
+	l, r, i := 0, 0, 0
+	for i = 0; l < left.Len() && r < right.Len(); i++ {
+		if get(l, left).CompareTo(get(r, right)) < 0 {
+			result.Index(i).Set(reflect.ValueOf(get(l, left)))
+			l++
+		} else {
+			result.Index(i).Set(reflect.ValueOf(get(r, right)))
+			r++
+		}
+	}
+	/* finish merging */
+	for l < left.Len() {
+		result.Index(i).Set(reflect.ValueOf(get(l, left)))
+		i++
+		l++
+	}
+	for r < right.Len() {
+		result.Index(i).Set(reflect.ValueOf(get(r, right)))
+		i++
+		r++
+	}
+	return result
 }
