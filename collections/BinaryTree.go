@@ -4,6 +4,7 @@ import (
 	"errors"
 )
 
+
 // Simple binary tree object
 type BinaryTree struct {
 	root  *treeNode
@@ -48,7 +49,7 @@ func insertBinaryTreeUtil(tree *treeNode, key string, cargo interface{}) (*treeN
 	return tree, err
 }
 
-// Method to remove cargo from binary tree
+// Method to remove cargo from simple binary tree
 func (tree *BinaryTree) Remove(key string) error {
 	var err error
 	tree.root, err = removeBinaryTreeUtil(tree.root, key)
@@ -59,6 +60,7 @@ func (tree *BinaryTree) Remove(key string) error {
 }
 
 // Utility method for cargo for cargo removal on simple binary tree
+// Remove cargo from tree with a given key
 func removeBinaryTreeUtil(tree *treeNode, key string) (*treeNode, error) {
 	if tree == nil {
 		return tree, errors.New("no element found with given key")
