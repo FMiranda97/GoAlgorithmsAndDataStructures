@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "./sortAlgo"
+	. "./packages/sortAlgo"
 	"fmt"
 	"math/rand"
 	"time"

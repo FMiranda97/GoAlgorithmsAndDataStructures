@@ -19,7 +19,7 @@ func (p pessoa) CompareTo(t interface{}) int8 {
 	}
 }
 
-const size = 4_000
+const size = 400_000
 
 var sortedArray, randomArray [size]pessoa
 var invalidArray [size]int
@@ -31,6 +31,6 @@ func setup() {
 		}
 	}
 	copy(randomArray[:], sortedArray[:])
-	_ = BubbleSort(sortedArray[:])
+	_ = MergeSort(sortedArray[:])
 	return
 }
