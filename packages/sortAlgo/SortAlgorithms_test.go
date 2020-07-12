@@ -35,6 +35,18 @@ func TestSortPerformance(t *testing.T) {
 	var p [sizeEfficient]pessoa
 
 	copy(p[:], randomArray[:])
+	startBitonicC := time.Now()
+	_ = BitonicSortC(p[:])
+	endBitonicC := time.Since(startBitonicC)
+	fmt.Println("concurrent bitonic sort:", endBitonicC)
+
+	copy(p[:], randomArray[:])
+	startBitonic := time.Now()
+	_ = BitonicSort(p[:])
+	endBitonic := time.Since(startBitonic)
+	fmt.Println("bitonic sort:", endBitonic)
+
+	copy(p[:], randomArray[:])
 	startQuickDualC := time.Now()
 	_ = QuickSortDualC(p[:])
 	endQuickDualC := time.Since(startQuickDualC)

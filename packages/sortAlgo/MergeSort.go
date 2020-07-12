@@ -89,45 +89,6 @@ func mergeSortC(l int, r int, slice reflect.Value) {
 			wg.Done()
 		}()
 		wg.Wait()
-		mergeC(l, m, r, slice)
-	}
-}
-
-// Utility function to perform merge in merge sort process
-func mergeC(l int, m int, r int, slice reflect.Value) {
-	n1 := m - l + 1
-	n2 := r - m
-	left := reflect.MakeSlice(slice.Type(), n1, n1)  // slice.Slice(l, m)
-	right := reflect.MakeSlice(slice.Type(), n2, n2) //slice.Slice(m+1, r)
-
-	/* Copy data to temp slices */
-	for i := 0; i < n1; i++ {
-		left.Index(i).Set(reflect.ValueOf(get(l+i, slice)))
-	}
-	for i := 0; i < n2; i++ {
-		right.Index(i).Set(reflect.ValueOf(get(m+1+i, slice)))
-	}
-	/* Merge slices */
-	i, j, k := 0, 0, l
-	for i < n1 && j < n2 {
-		if get(i, left).CompareTo(get(j, right)) <= 0 {
-			slice.Index(k).Set(reflect.ValueOf(get(i, left)))
-			i++
-		} else {
-			slice.Index(k).Set(reflect.ValueOf(get(j, right)))
-			j++
-		}
-		k++
-	}
-	/* finish merging */
-	for i < n1 {
-		slice.Index(k).Set(reflect.ValueOf(get(i, left)))
-		i++
-		k++
-	}
-	for j < n2 {
-		slice.Index(k).Set(reflect.ValueOf(get(j, right)))
-		j++
-		k++
+		merge(l, m, r, slice)
 	}
 }

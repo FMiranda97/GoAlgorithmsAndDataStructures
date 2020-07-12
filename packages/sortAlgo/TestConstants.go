@@ -19,7 +19,7 @@ func (p pessoa) CompareTo(t interface{}) int8 {
 	}
 }
 
-const sizeEfficient = 2_000_000
+const sizeEfficient = 400_000
 const sizeSimple = 1000
 
 var sortedArray, randomArray [sizeEfficient]pessoa
