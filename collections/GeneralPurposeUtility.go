@@ -14,6 +14,7 @@ type node struct {
 type treeNode struct {
 	key    string
 	cargo  interface{}
+	height int
 	left   *treeNode
 	right  *treeNode
 	parent *treeNode
@@ -56,4 +57,13 @@ func printTree2DUtil(tree *treeNode, space int, spacing int) {
 	// Process left child
 
 	printTree2DUtil(tree.left, space, spacing)
+}
+
+// general purpose utility to find max of two int values
+func getMax(value1 int, value2 int) int {
+	if value1 >= value2 {
+		return value1
+	} else {
+		return value2
+	}
 }

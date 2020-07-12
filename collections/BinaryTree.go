@@ -7,21 +7,21 @@ import (
 //todo verify documentation
 
 // simple binary tree object
-type BinaryTreeMap struct {
+type BinaryTree struct {
 	root  *treeNode
 	count int
 }
 
 // simple binary tree constructor
-func NewBinaryTree() BinaryTreeMap {
-	return BinaryTreeMap{
+func NewBinaryTree() BinaryTree {
+	return BinaryTree{
 		root:  nil,
 		count: 0,
 	}
 }
 
 // method to insert cargo into binary tree
-func (tree *BinaryTreeMap) Insert(key string, cargo interface{}) error {
+func (tree *BinaryTree) Insert(key string, cargo interface{}) error {
 	var err error
 	tree.root, err = insertBinaryTreeUtil(tree.root, key, cargo)
 	if err == nil {
@@ -51,7 +51,7 @@ func insertBinaryTreeUtil(tree *treeNode, key string, cargo interface{}) (*treeN
 }
 
 // method to remove cargo into binary tree
-func (tree *BinaryTreeMap) Remove(key string) error {
+func (tree *BinaryTree) Remove(key string) error {
 	var err error
 	tree.root, err = removeBinaryTreeUtil(tree.root, key)
 	if err == nil {
@@ -87,7 +87,7 @@ func removeBinaryTreeUtil(tree *treeNode, key string) (*treeNode, error) {
 }
 
 // method to retrieve cargo with a given key
-func (tree BinaryTreeMap) Get(key string) (interface{}, error) {
+func (tree BinaryTree) Get(key string) (interface{}, error) {
 	found, err := getBinaryTreeUtil(tree.root, key)
 	if err == nil {
 		return found.cargo, err
@@ -110,18 +110,18 @@ func getBinaryTreeUtil(tree *treeNode, key string) (*treeNode, error) {
 }
 
 // method returning number of elements in tree
-func (tree BinaryTreeMap) Count() int {
+func (tree BinaryTree) Count() int {
 	return tree.count
 }
 
 // method to print simple binary tree contents
-func (tree BinaryTreeMap) PrintTree() {
+func (tree BinaryTree) PrintTree() {
 	printTreeUtil(tree.root)
 }
 
 // method to print simple binary tree layout
 // passed argument defines how much spacing there is between tree levels
-func (tree BinaryTreeMap) PrintTree2D(spacing int) {
+func (tree BinaryTree) PrintTree2D(spacing int) {
 	// Pass initial space count as 0
 	printTree2DUtil(tree.root, 0, spacing)
 }
