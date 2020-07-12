@@ -6,13 +6,13 @@ import (
 
 //todo verify documentation
 
-// simple binary tree object
+// Simple binary tree object
 type BinaryTree struct {
 	root  *treeNode
 	count int
 }
 
-// simple binary tree constructor
+// Simple binary tree constructor
 func NewBinaryTree() BinaryTree {
 	return BinaryTree{
 		root:  nil,
@@ -20,7 +20,7 @@ func NewBinaryTree() BinaryTree {
 	}
 }
 
-// method to insert cargo into binary tree
+// Method to insert cargo into binary tree
 func (tree *BinaryTree) Insert(key string, cargo interface{}) error {
 	var err error
 	tree.root, err = insertBinaryTreeUtil(tree.root, key, cargo)
@@ -30,7 +30,7 @@ func (tree *BinaryTree) Insert(key string, cargo interface{}) error {
 	return err
 }
 
-// utility function for simple binary tree insertion
+// Utility function for simple binary tree insertion
 func insertBinaryTreeUtil(tree *treeNode, key string, cargo interface{}) (*treeNode, error) {
 	var err error
 	if tree == nil { //reached insertion place
@@ -50,7 +50,7 @@ func insertBinaryTreeUtil(tree *treeNode, key string, cargo interface{}) (*treeN
 	return tree, err
 }
 
-// method to remove cargo into binary tree
+// Method to remove cargo from simple binary tree
 func (tree *BinaryTree) Remove(key string) error {
 	var err error
 	tree.root, err = removeBinaryTreeUtil(tree.root, key)
@@ -60,7 +60,7 @@ func (tree *BinaryTree) Remove(key string) error {
 	return err
 }
 
-// remove cargo from tree with a given key
+// Remove cargo from tree with a given key
 func removeBinaryTreeUtil(tree *treeNode, key string) (*treeNode, error) {
 	if tree == nil {
 		return tree, errors.New("no element found with given key")
@@ -86,7 +86,7 @@ func removeBinaryTreeUtil(tree *treeNode, key string) (*treeNode, error) {
 	return tree, err
 }
 
-// method to retrieve cargo with a given key
+// Method to retrieve cargo with a given key
 func (tree BinaryTree) Get(key string) (interface{}, error) {
 	found, err := getBinaryTreeUtil(tree.root, key)
 	if err == nil {
@@ -95,7 +95,7 @@ func (tree BinaryTree) Get(key string) (interface{}, error) {
 	return nil, err
 }
 
-// utility function for simple binary tree cargo retrieving
+// Utility function for simple binary tree cargo retrieving
 func getBinaryTreeUtil(tree *treeNode, key string) (*treeNode, error) {
 	if tree == nil {
 		return nil, errors.New("no element found with given key")
@@ -109,18 +109,18 @@ func getBinaryTreeUtil(tree *treeNode, key string) (*treeNode, error) {
 	}
 }
 
-// method returning number of elements in tree
+// Method returning number of elements in tree
 func (tree BinaryTree) Count() int {
 	return tree.count
 }
 
-// method to print simple binary tree contents
+// Method to print simple binary tree contents
 func (tree BinaryTree) PrintTree() {
 	printTreeUtil(tree.root)
 }
 
-// method to print simple binary tree layout
-// passed argument defines how much spacing there is between tree levels
+// Method to print simple binary tree layout
+// Passed argument defines how much spacing there is between tree levels
 func (tree BinaryTree) PrintTree2D(spacing int) {
 	// Pass initial space count as 0
 	printTree2DUtil(tree.root, 0, spacing)
