@@ -5,14 +5,14 @@ import (
 	"fmt"
 )
 
-// queue object
+// Queue object
 type Queue struct {
 	count int
 	first *node
 	last  *node
 }
 
-// queue constructor
+// Queue constructor
 func NewQueue() Queue {
 	return Queue{
 		count: 0,
@@ -21,7 +21,7 @@ func NewQueue() Queue {
 	}
 }
 
-// method to insert cargo into queue
+// Method to insert cargo into queue
 func (queue *Queue) Append(cargo interface{}) {
 	newNode := node{
 		cargo: cargo,
@@ -37,7 +37,7 @@ func (queue *Queue) Append(cargo interface{}) {
 	queue.count++
 }
 
-// method to pop cargo from queue
+// Method to pop cargo from queue
 func (queue *Queue) Pop() (cargo interface{}, err error) {
 	if queue.count == 0 {
 		return nil, errors.New("empty queue")
@@ -51,7 +51,7 @@ func (queue *Queue) Pop() (cargo interface{}, err error) {
 	return cargo, nil
 }
 
-// method to display queue contents
+// Method to display queue contents
 func (queue Queue) PrintQueue() {
 	aux := queue.first
 	if aux == nil {
@@ -62,7 +62,7 @@ func (queue Queue) PrintQueue() {
 	}
 }
 
-// method to return count of elements in queue
+// Method to return count of elements in queue
 func (queue *Queue) Len() int {
 	return queue.count
 }

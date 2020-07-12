@@ -4,13 +4,13 @@ import (
 	"fmt"
 )
 
-// general purpose structure for linear collections
+// General purpose structure for linear collections
 type node struct {
 	cargo interface{}
 	next  *node
 }
 
-// general purpose structure for binary tree collections
+// General purpose structure for binary tree collections
 type treeNode struct {
 	key    string
 	cargo  interface{}
@@ -19,7 +19,7 @@ type treeNode struct {
 	parent *treeNode
 }
 
-// general purpose binary tree printing utility function
+// General purpose binary tree printing utility function
 func printTreeUtil(tree *treeNode) {
 	if tree == nil {
 		return
@@ -29,7 +29,7 @@ func printTreeUtil(tree *treeNode) {
 	printTreeUtil(tree.right)
 }
 
-// general purpose 2D printing utility function
+// General purpose 2D printing utility function
 func printTree2DUtil(tree *treeNode, space int, spacing int) {
 
 	// Base case

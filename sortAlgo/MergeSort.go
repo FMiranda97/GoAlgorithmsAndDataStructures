@@ -2,7 +2,7 @@ package sortAlgo
 
 import "reflect"
 
-// function to start merge sort in array
+// Function to start merge sort in array
 func MergeSort(arr interface{}) error { // why does this work
 	if slice, _, err := sortSetup(arr); err == nil {
 		mergeSort(0, slice.Len()-1, slice)
@@ -12,7 +12,7 @@ func MergeSort(arr interface{}) error { // why does this work
 	}
 }
 
-// utility function to perform merge sort in array
+// Utility function to perform merge sort in array
 func mergeSort(l int, r int, slice reflect.Value) {
 	if r != l {
 		m := l + (r-l)/2
@@ -22,7 +22,7 @@ func mergeSort(l int, r int, slice reflect.Value) {
 	}
 }
 
-// utility function to perform merge in merge sort process
+// Utility function to perform merge in merge sort process
 func merge(l int, m int, r int, slice reflect.Value) {
 	n1 := m - l + 1
 	n2 := r - m
@@ -61,7 +61,7 @@ func merge(l int, m int, r int, slice reflect.Value) {
 	}
 }
 
-// function to start merge sort in array using concurrency
+// Function to start merge sort in array using concurrency
 func MergeSortConcurrent(arr interface{}) (err error) { // why does this work
 	if slice, _, err := sortSetup(arr); err == nil {
 		final := make(chan reflect.Value)
@@ -77,7 +77,7 @@ func MergeSortConcurrent(arr interface{}) (err error) { // why does this work
 	}
 }
 
-// utility function to perform merge sort in array using concurrency
+// Utility function to perform merge sort in array using concurrency
 func mergeSortConcurrent(slice reflect.Value, res chan reflect.Value) {
 	if slice.Len() == 1 {
 		res <- slice
@@ -97,7 +97,7 @@ func mergeSortConcurrent(slice reflect.Value, res chan reflect.Value) {
 	}
 }
 
-// utility function to perform merge in merge sort process using concurrency
+// Utility function to perform merge in merge sort process using concurrency
 func mergeConcurrent(left reflect.Value, right reflect.Value) reflect.Value {
 	result := reflect.MakeSlice(left.Type(), left.Len()+right.Len(), left.Len()+right.Len()) // todo check type
 	l, r, i := 0, 0, 0
