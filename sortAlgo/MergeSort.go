@@ -2,6 +2,8 @@ package sortAlgo
 
 import "reflect"
 
+//todo get a better concurrent method
+
 // Function to start merge sort in array
 func MergeSort(arr interface{}) error { // why does this work
 	if slice, _, err := sortSetup(arr); err == nil {
