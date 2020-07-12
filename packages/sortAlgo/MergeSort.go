@@ -5,10 +5,8 @@ import (
 	"sync"
 )
 
-//todo get a better concurrent method
-
 // Function to start merge sort in slice
-func MergeSort(arr interface{}) error { // why does this work
+func MergeSort(arr interface{}) error {
 	if slice, _, err := sortSetup(arr); err == nil {
 		mergeSort(0, slice.Len()-1, slice)
 		return err
@@ -66,71 +64,8 @@ func merge(l int, m int, r int, slice reflect.Value) {
 	}
 }
 
-// Function to start merge sort in slice using concurrency
-func MergeSortConcurrent(arr interface{}) (err error) { // why does this work
-	if slice, _, err := sortSetup(arr); err == nil {
-		final := make(chan reflect.Value)
-		defer close(final)
-		go mergeSortConcurrent(slice, final)
-		res := <-final
-		for i := 0; i < slice.Len(); i++ {
-			slice.Index(i).Set(reflect.ValueOf(get(i, res)))
-		}
-		return err
-	} else {
-		return err
-	}
-}
-
-// Utility function to perform merge sort in slice using concurrency
-func mergeSortConcurrent(slice reflect.Value, res chan reflect.Value) {
-	if slice.Len() == 1 {
-		res <- slice
-	} else {
-		m := slice.Len() / 2
-		var left, right reflect.Value
-		leftC, rightC := make(chan reflect.Value), make(chan reflect.Value)
-		defer close(leftC)
-		defer close(rightC)
-		leftSlc := slice.Slice(0, m)
-		go mergeSortConcurrent(leftSlc, leftC)
-		rightSlc := slice.Slice(m, slice.Len())
-		go mergeSortConcurrent(rightSlc, rightC)
-		left = <-leftC
-		right = <-rightC
-		res <- mergeConcurrent(left, right)
-	}
-}
-
-// Utility function to perform merge in merge sort process using concurrency
-func mergeConcurrent(left reflect.Value, right reflect.Value) reflect.Value {
-	result := reflect.MakeSlice(left.Type(), left.Len()+right.Len(), left.Len()+right.Len()) // todo check type
-	l, r, i := 0, 0, 0
-	for i = 0; l < left.Len() && r < right.Len(); i++ {
-		if get(l, left).CompareTo(get(r, right)) < 0 {
-			result.Index(i).Set(reflect.ValueOf(get(l, left)))
-			l++
-		} else {
-			result.Index(i).Set(reflect.ValueOf(get(r, right)))
-			r++
-		}
-	}
-	/* finish merging */
-	for l < left.Len() {
-		result.Index(i).Set(reflect.ValueOf(get(l, left)))
-		i++
-		l++
-	}
-	for r < right.Len() {
-		result.Index(i).Set(reflect.ValueOf(get(r, right)))
-		i++
-		r++
-	}
-	return result
-}
-
 // Function to start merge sort in slice
-func MergeSortC(arr interface{}) error { // why does this work
+func MergeSortC(arr interface{}) error {
 	if slice, _, err := sortSetup(arr); err == nil {
 		mergeSortC(0, slice.Len()-1, slice)
 		return err

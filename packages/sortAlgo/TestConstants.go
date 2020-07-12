@@ -19,15 +19,16 @@ func (p pessoa) CompareTo(t interface{}) int8 {
 	}
 }
 
-const size = 400_000
+const sizeEfficient = 2_000_000
+const sizeSimple = 1000
 
-var sortedArray, randomArray [size]pessoa
-var invalidArray [size]int
+var sortedArray, randomArray [sizeEfficient]pessoa
+var invalidArray [sizeEfficient]int
 
 func setup() {
-	for i := 0; i < size; i++ {
+	for i := 0; i < sizeEfficient; i++ {
 		sortedArray[i] = pessoa{
-			id: rand.Int() % (size * 100),
+			id: rand.Int() % (sizeEfficient * 100),
 		}
 	}
 	copy(randomArray[:], sortedArray[:])
