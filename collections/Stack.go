@@ -1,4 +1,4 @@
-//package dataStructures provides constructs for storing data
+// Package collections provides constructs for storing and searching data
 package collections
 
 import (
@@ -6,13 +6,13 @@ import (
 	"fmt"
 )
 
-// stack object
+// Stack object
 type Stack struct {
 	count int
 	first *node
 }
 
-// stack constructor
+// Stack constructor
 func NewStack() Stack {
 	return Stack{
 		count: 0,
@@ -20,13 +20,13 @@ func NewStack() Stack {
 	}
 }
 
-// method to push cargo into stack
+// Method to push cargo into stack
 func (stack *Stack) Push(cargo interface{}) {
 	stack.first = pushUtil(stack.first, cargo)
 	stack.count++
 }
 
-// utility function for stack pushing
+// Utility function for stack pushing
 func pushUtil(stack *node, cargo interface{}) *node {
 	var newNode node
 	newNode.cargo = cargo
@@ -39,7 +39,7 @@ func pushUtil(stack *node, cargo interface{}) *node {
 
 }
 
-// method to pop cargo from stack
+// Method to pop cargo from stack
 func (stack *Stack) Pop() (interface{}, error) {
 	var cargo interface{}
 	var err error
@@ -50,7 +50,7 @@ func (stack *Stack) Pop() (interface{}, error) {
 	return cargo, err
 }
 
-// utility function for stack popping
+// Utility function for stack popping
 func popStackUtil(stack *node) (interface{}, *node, error) {
 	if stack == nil {
 		return nil, nil, errors.New("empty stack")
@@ -59,12 +59,12 @@ func popStackUtil(stack *node) (interface{}, *node, error) {
 	return stack.cargo, stack.next, nil
 }
 
-// method to return count of elements in stack
+// Method to return count of elements in stack
 func (stack Stack) Len() int {
 	return stack.count
 }
 
-// method to display stack contents
+// Method to display stack contents
 func (stack Stack) PrintStack() {
 	aux := stack.first
 	if aux == nil {

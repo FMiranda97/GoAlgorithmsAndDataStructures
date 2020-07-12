@@ -5,14 +5,14 @@ import (
 	"fmt"
 )
 
-// linked list object
+// Linked list object
 type LinkedList struct {
 	count int
 	first *node
 	last  *node
 }
 
-// linked list constructor
+// Linked list constructor
 func NewLinkedList() LinkedList {
 	return LinkedList{
 		count: 0,
@@ -21,7 +21,7 @@ func NewLinkedList() LinkedList {
 	}
 }
 
-// method to insert cargo at end of linked list
+// Method to insert cargo at end of linked list
 func (list *LinkedList) Append(cargo interface{}) {
 	newNode := node{
 		cargo: cargo,
@@ -37,7 +37,7 @@ func (list *LinkedList) Append(cargo interface{}) {
 	list.count++
 }
 
-// method to insert cargo at beginning of linked list
+// Method to insert cargo at beginning of linked list
 func (list *LinkedList) Prepend(cargo interface{}) {
 	newNode := node{
 		cargo: cargo,
@@ -51,7 +51,7 @@ func (list *LinkedList) Prepend(cargo interface{}) {
 	list.count++
 }
 
-// method to insert cargo into linked list at a given position
+// Method to insert cargo into linked list at a given position
 func (list *LinkedList) Insert(cargo interface{}, index int) error {
 	if list.count < index {
 		return errors.New("index out of bounds")
@@ -78,7 +78,7 @@ func (list *LinkedList) Insert(cargo interface{}, index int) error {
 	return nil
 }
 
-// removes cargo from linked list at index
+// Removes cargo from linked list at index
 func (list *LinkedList) Remove(index int) error {
 	if list.count <= index {
 		return errors.New("index out of bounds")
@@ -102,7 +102,7 @@ func (list *LinkedList) Remove(index int) error {
 	return nil
 }
 
-// method to display linked list contents
+// Method to display linked list contents
 func (list LinkedList) PrintList() {
 	aux := list.first
 	if aux == nil {
@@ -113,8 +113,8 @@ func (list LinkedList) PrintList() {
 	}
 }
 
-// method to retrieve cargo at a given position
-// should not be used to iterate
+// Method to retrieve cargo at a given position.
+// Should not be used to iterate
 func (list *LinkedList) Get(index int) (interface{}, error) {
 	if list.count <= index {
 		return nil, errors.New("index out of bounds")
@@ -126,13 +126,13 @@ func (list *LinkedList) Get(index int) (interface{}, error) {
 	return aux.cargo, nil
 }
 
-// method to return count of elements in linked list
+// Method to return count of elements in linked list
 func (list *LinkedList) Len() int {
 	return list.count
 }
 
-// returns an iterator function. Each call to the return function returns the next element
-// once last element is reached returns nil forever
+// Returns an iterator function. Each call to the return function returns the next element.
+// Once last element is reached returns nil forever
 func (list *LinkedList) GetIterator() func() interface{} {
 	elem := list.first
 	return func() interface{} {
@@ -145,7 +145,7 @@ func (list *LinkedList) GetIterator() func() interface{} {
 	}
 }
 
-// builds and returns an array with cargos present in LinkedList
+// Builds and returns an array with cargos present in LinkedList
 func (list *LinkedList) GetArray() interface{} {
 	arr := make([]interface{}, list.count)
 	it := list.GetIterator()
