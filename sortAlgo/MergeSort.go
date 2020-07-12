@@ -3,11 +3,13 @@ package sortAlgo
 import "reflect"
 
 // function to start merge sort in array
-func MergeSort(arr interface{}) (err error) { // why does this work
+func MergeSort(arr interface{}) error { // why does this work
 	if slice, _, err := sortSetup(arr); err == nil {
 		mergeSort(0, slice.Len()-1, slice)
+		return err
+	} else {
+		return err
 	}
-	return err
 }
 
 // utility function to perform merge sort in array
@@ -69,8 +71,10 @@ func MergeSortConcurrent(arr interface{}) (err error) { // why does this work
 		for i := 0; i < slice.Len(); i++ {
 			slice.Index(i).Set(reflect.ValueOf(get(i, res)))
 		}
+		return err
+	} else {
+		return err
 	}
-	return err
 }
 
 // utility function to perform merge sort in array using concurrency

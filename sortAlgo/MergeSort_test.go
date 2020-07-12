@@ -26,6 +26,7 @@ func (p pessoa) CompareTo(t interface{}) int8 {
 const size = 4_000
 
 var p1, p2, p3 [size]pessoa
+var invalidArray [size]int
 
 func TestMain(m *testing.M) {
 	setup()
@@ -45,6 +46,10 @@ func setup() {
 }
 
 func TestMergeSort(t *testing.T) {
+	err := MergeSort(invalidArray[:])
+	if err == nil {
+		t.Errorf("did not report error on invalid input")
+	}
 	var p [size]pessoa
 	copy(p[:], p2[:])
 	_ = MergeSort(p[:])
@@ -54,6 +59,10 @@ func TestMergeSort(t *testing.T) {
 }
 
 func TestConcurrentMergeSort(t *testing.T) {
+	err := MergeSortConcurrent(invalidArray[:])
+	if err == nil {
+		t.Errorf("did not report error on invalid input")
+	}
 	var p [size]pessoa
 	copy(p[:], p2[:])
 	_ = MergeSortConcurrent(p[:])

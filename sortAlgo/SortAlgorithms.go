@@ -13,7 +13,8 @@ type Sortable interface {
 
 // utility function to check if data types are correct and returning function to swap elements
 func sortSetup(arr interface{}) (reflect.Value, func(int, int), error) {
-	if reflect.TypeOf(arr).Kind() == reflect.Slice {
+	typ := reflect.TypeOf((*Sortable)(nil)).Elem()
+	if reflect.TypeOf(arr).Kind() == reflect.Slice && reflect.TypeOf(arr).Implements(typ) {
 		slice := reflect.ValueOf(arr)
 		swap := reflect.Swapper(slice.Interface())
 		return slice, swap, nil
@@ -27,7 +28,7 @@ func get(index int, t reflect.Value) Sortable {
 }
 
 // function to start bubble sort in array
-func BubbleSort(arr interface{}) (err error) { // why does this work
+func BubbleSort(arr interface{}) error { // why does this work
 	if slice, swap, err := sortSetup(arr); err == nil {
 		for i := 0; i < slice.Len()-1; i++ {
 			for j := 0; j < slice.Len()-1; j++ {
@@ -37,6 +38,8 @@ func BubbleSort(arr interface{}) (err error) { // why does this work
 				}
 			}
 		}
+		return nil
+	} else {
+		return err
 	}
-	return err
 }
