@@ -27,7 +27,7 @@ func TestSimpleSorts(t *testing.T) {
 		t.Errorf("insertion sort failed")
 	}
 	if !reflect.DeepEqual(p1, p3) {
-		t.Errorf("bubble sort failed")
+		t.Errorf("selection sort failed")
 	}
 }
 

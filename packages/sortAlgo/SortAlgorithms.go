@@ -16,7 +16,7 @@ type Sortable interface {
 
 // Utility function to check if data types are correct and returning function to swap elements
 func sortSetup(arr interface{}) (reflect.Value, func(int, int), error) {
-	typ := reflect.TypeOf((*Sortable)(nil)).Elem()
+	typ := reflect.TypeOf((*Sortable)(nil)).Elem() // todo make const
 	if reflect.TypeOf(arr).Kind() == reflect.Slice && reflect.TypeOf(arr).Elem().Implements(typ) {
 		slice := reflect.ValueOf(arr)
 		swap := reflect.Swapper(slice.Interface())
