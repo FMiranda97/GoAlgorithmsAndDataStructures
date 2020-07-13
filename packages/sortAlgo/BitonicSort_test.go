@@ -6,9 +6,9 @@ import (
 )
 
 func TestBitonicSort(t *testing.T) {
-	//if testing.Short() {
-	//	t.Skip("skipping testing in short mode")
-	//}
+	if testing.Short() {
+		t.Skip("skipping testing in short mode")
+	}
 	err := BitonicSort(invalidArray[:])
 	if err == nil {
 		t.Errorf("did not report error on invalid input")
@@ -22,9 +22,9 @@ func TestBitonicSort(t *testing.T) {
 }
 
 func TestConcurrentBitonicSort(t *testing.T) {
-	//if testing.Short() {
-	//	t.Skip("skipping testing in short mode")
-	//}
+	if testing.Short() {
+		t.Skip("skipping testing in short mode")
+	}
 	err := BitonicSortC(invalidArray[:])
 	if err == nil {
 		t.Errorf("did not report error on invalid input")

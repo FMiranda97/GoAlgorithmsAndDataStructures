@@ -12,7 +12,7 @@ type RBTree struct {
 }
 
 // Red-Black tree constructor
-func NewRBTree() RBTree {
+func NewRBTreeS() RBTree {
 	return RBTree{
 		root:  nil,
 		count: 0,

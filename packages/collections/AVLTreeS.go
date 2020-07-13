@@ -5,22 +5,22 @@ import (
 )
 
 // AVL tree object
-type AVLTree struct {
+type AVLTreeS struct {
 	root  *treeNode
 	count int
 }
 
 // AVL tree constructor
-func NewAVLTree() AVLTree {
-	return AVLTree{
+func NewAVLTreeS() AVLTreeS {
+	return AVLTreeS{
 		root:  nil,
 		count: 0,
 	}
 }
 
 // Method to insert cargo into AVL tree
-func (tree *AVLTree) Insert(key string, cargo interface{}) (err error) {
-	tree.root, err = insertAVLTreeUtil(tree.root, key, cargo)
+func (tree *AVLTreeS) Insert(key string, cargo interface{}) (err error) {
+	tree.root, err = insertAVLTreeSUtil(tree.root, key, cargo)
 	if err == nil {
 		tree.count++
 	}
@@ -28,7 +28,7 @@ func (tree *AVLTree) Insert(key string, cargo interface{}) (err error) {
 }
 
 // Utility function for AVL tree insertion
-func insertAVLTreeUtil(tree *treeNode, key string, cargo interface{}) (*treeNode, error) {
+func insertAVLTreeSUtil(tree *treeNode, key string, cargo interface{}) (*treeNode, error) {
 	var err error
 	if tree == nil {
 		newNode := treeNode{
@@ -39,9 +39,9 @@ func insertAVLTreeUtil(tree *treeNode, key string, cargo interface{}) (*treeNode
 		return &newNode, nil
 	}
 	if key < tree.key {
-		tree.left, err = insertAVLTreeUtil(tree.left, key, cargo)
+		tree.left, err = insertAVLTreeSUtil(tree.left, key, cargo)
 	} else if key > tree.key {
-		tree.right, err = insertAVLTreeUtil(tree.right, key, cargo)
+		tree.right, err = insertAVLTreeSUtil(tree.right, key, cargo)
 	} else { // Equal keys are not allowed in BST
 		return tree, errors.New("element with this key already exists")
 	}
@@ -120,9 +120,9 @@ func leftRotateAVL(treeNode *treeNode) *treeNode {
 }
 
 // Method to remove cargo from an AVL tree
-func (tree *AVLTree) Remove(key string) error {
+func (tree *AVLTreeS) Remove(key string) error {
 	var err error
-	tree.root, err = removeAVLTreeUtil(tree.root, key)
+	tree.root, err = removeAVLTreeSUtil(tree.root, key)
 	if err == nil {
 		tree.count--
 	}
@@ -130,15 +130,15 @@ func (tree *AVLTree) Remove(key string) error {
 }
 
 // Remove cargo from AVL tree with a given key
-func removeAVLTreeUtil(tree *treeNode, key string) (*treeNode, error) {
+func removeAVLTreeSUtil(tree *treeNode, key string) (*treeNode, error) {
 	if tree == nil {
 		return tree, errors.New("no element found with given key")
 	}
 	var err error
 	if key < tree.key {
-		tree.left, err = removeAVLTreeUtil(tree.left, key)
+		tree.left, err = removeAVLTreeSUtil(tree.left, key)
 	} else if key > tree.key {
-		tree.right, err = removeAVLTreeUtil(tree.right, key)
+		tree.right, err = removeAVLTreeSUtil(tree.right, key)
 	} else {
 		// node with only one child or no child
 		if tree.left == nil {
@@ -151,7 +151,7 @@ func removeAVLTreeUtil(tree *treeNode, key string) (*treeNode, error) {
 			}
 			tree.key = rightmost.key
 			tree.cargo = rightmost.cargo
-			tree.left, err = removeAVLTreeUtil(tree.left, rightmost.key)
+			tree.left, err = removeAVLTreeSUtil(tree.left, rightmost.key)
 		}
 	}
 
@@ -184,18 +184,18 @@ func removeAVLTreeUtil(tree *treeNode, key string) (*treeNode, error) {
 }
 
 // Method returning number of elements in tree
-func (tree AVLTree) Count() int {
+func (tree AVLTreeS) Count() int {
 	return tree.count
 }
 
 // Method to print AVL tree contents
-func (tree AVLTree) PrintTree() {
+func (tree AVLTreeS) PrintTree() {
 	printTreeUtil(tree.root)
 }
 
 // Method to print AVL tree layout
 // Passed argument defines how much spacing there is between tree levels
-func (tree AVLTree) PrintTree2D(spacing int) {
+func (tree AVLTreeS) PrintTree2D(spacing int) {
 	// Pass initial space count as 0
 	printTree2DUtil(tree.root, 0, spacing)
 }
