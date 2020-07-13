@@ -4,8 +4,6 @@ import (
 	"errors"
 )
 
-//todo verify documentation
-
 // Simple binary tree object
 type BinaryTree struct {
 	root  *treeNode
@@ -60,7 +58,7 @@ func (tree *BinaryTree) Remove(key string) error {
 	return err
 }
 
-// Remove cargo from tree with a given key
+// Utility method for cargo for cargo removal on simple binary tree
 func removeBinaryTreeUtil(tree *treeNode, key string) (*treeNode, error) {
 	if tree == nil {
 		return tree, errors.New("no element found with given key")
@@ -119,8 +117,8 @@ func (tree BinaryTree) PrintTree() {
 	printTreeUtil(tree.root)
 }
 
-// Method to print simple binary tree layout
-// Passed argument defines how much spacing there is between tree levels
+// Method to print simple binary tree layout.
+// Passed argument defines how many " " characters there are in between tree levels
 func (tree BinaryTree) PrintTree2D(spacing int) {
 	// Pass initial space count as 0
 	printTree2DUtil(tree.root, 0, spacing)
