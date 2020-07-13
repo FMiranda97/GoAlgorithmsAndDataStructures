@@ -30,13 +30,15 @@ func get(index int, t reflect.Value) Sortable {
 	return t.Index(index).Interface().(Sortable)
 }
 
+func panicControl(e *error) {
+	if r := recover(); r != nil {
+		*e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
+	}
+}
+
 // Function to start bubble sort in slice
 func BubbleSort(arr interface{}) (e error) {
-	defer func() {
-		if r := recover(); r != nil {
-			e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
-		}
-	}()
+	defer panicControl(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		for i := 0; i < slice.Len()-1; i++ {
 			for j := 0; j < slice.Len()-1; j++ {
@@ -54,11 +56,7 @@ func BubbleSort(arr interface{}) (e error) {
 
 // Function to start insertion sort in slice
 func InsertionSort(arr interface{}) (e error) {
-	defer func() {
-		if r := recover(); r != nil {
-			e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
-		}
-	}()
+	defer panicControl(&e)
 	if slice, _, err := sortSetup(arr); err == nil {
 		for i := 1; i < slice.Len(); i++ {
 			key := get(i, slice)
@@ -77,11 +75,7 @@ func InsertionSort(arr interface{}) (e error) {
 
 // Function to start insertion sort in slice
 func SelectionSort(arr interface{}) (e error) {
-	defer func() {
-		if r := recover(); r != nil {
-			e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
-		}
-	}()
+	defer panicControl(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		for i := 0; i < slice.Len()-1; i++ {
 			min := i

@@ -1,19 +1,13 @@
 package sortAlgo
 
 import (
-	"errors"
-	"fmt"
 	"reflect"
 	"sync"
 )
 
 // Function to start quick sort in slice
 func BitonicSort(arr interface{}) (e error) {
-	defer func() {
-		if r := recover(); r != nil {
-			e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
-		}
-	}()
+	defer panicControl(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		bitonicSort(0, slice.Len(), slice, swap, true)
 		return err
@@ -56,11 +50,7 @@ func greatestPowerOfTwoLessThan(n int) int {
 
 // Function to start quick sort in slice
 func BitonicSortC(arr interface{}) (e error) {
-	defer func() {
-		if r := recover(); r != nil {
-			e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
-		}
-	}()
+	defer panicControl(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		bitonicSortC(0, slice.Len(), slice, swap, true)
 		return err

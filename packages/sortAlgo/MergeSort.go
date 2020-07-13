@@ -1,19 +1,13 @@
 package sortAlgo
 
 import (
-	"errors"
-	"fmt"
 	"reflect"
 	"sync"
 )
 
 // Function to start merge sort in slice
 func MergeSort(arr interface{}) (e error) {
-	defer func() {
-		if r := recover(); r != nil {
-			e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
-		}
-	}()
+	defer panicControl(&e)
 	if slice, _, err := sortSetup(arr); err == nil {
 		mergeSort(0, slice.Len()-1, slice)
 		return err
@@ -73,11 +67,7 @@ func merge(l int, m int, r int, slice reflect.Value) {
 
 // Function to start merge sort in slice
 func MergeSortC(arr interface{}) (e error) {
-	defer func() {
-		if r := recover(); r != nil {
-			e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
-		}
-	}()
+	defer panicControl(&e)
 	if slice, _, err := sortSetup(arr); err == nil {
 		mergeSortC(0, slice.Len()-1, slice)
 		return err

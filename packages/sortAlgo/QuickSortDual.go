@@ -1,8 +1,6 @@
 package sortAlgo
 
 import (
-	"errors"
-	"fmt"
 	"math/rand"
 	"reflect"
 	"sync"
@@ -10,11 +8,7 @@ import (
 
 // Function to start merge sort in slice using 2 pivots
 func QuickSortDual(arr interface{}) (e error) {
-	defer func() {
-		if r := recover(); r != nil {
-			e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
-		}
-	}()
+	defer panicControl(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		quickSortDual(0, slice.Len()-1, slice, swap)
 		return err
@@ -71,11 +65,7 @@ func partitionDual(low int, high int, slice reflect.Value, swap func(int, int)) 
 
 // Function to start merge sort in slice using 2 pivots
 func QuickSortDualC(arr interface{}) (e error) {
-	defer func() {
-		if r := recover(); r != nil {
-			e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
-		}
-	}()
+	defer panicControl(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		quickSortDualC(0, slice.Len()-1, slice, swap)
 		return err
