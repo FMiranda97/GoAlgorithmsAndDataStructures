@@ -1,5 +1,6 @@
 package main
 
+//todo check if structures use pointers
 import (
 	. "./packages/collections"
 	"fmt"
@@ -7,11 +8,12 @@ import (
 )
 
 type pessoa struct {
-	id int
+	id   int
+	nome string
 }
 
-func (p pessoa) CompareTo(t interface{}) int8 {
-	target := t.(pessoa)
+func (p pessoa) CompareTo(t interface{}) int8 { // necessary for collections and sorts usage
+	target := t.(*pessoa)
 	if p.id < target.id {
 		return -1
 	} else if p.id > target.id {
@@ -21,24 +23,37 @@ func (p pessoa) CompareTo(t interface{}) int8 {
 	}
 }
 
+func createPessoa(id int, nome string) *pessoa { // utility
+	return &pessoa{
+		id:   id,
+		nome: nome,
+	}
+}
+
+func retrievePessoa(id int, tree AVLTree) *pessoa { // utility
+	a, _ := tree.Get(pessoa{id: id})
+	return (*a).(*pessoa)
+}
+
 func testCollection() {
 	const size = 20
 	tree := NewAVLTree()
 	for i := 0; i < size; i++ {
-		p := pessoa{
-			id: rand.Int() % (size * 100),
+		var p Sortable
+		p = &pessoa{
+			id:   rand.Int() % (size * 100),
+			nome: string(rand.Int() % 100),
 		}
-		_ = tree.Insert(p)
+		//p = createPessoa(rand.Int() % (size * 100), string(rand.Int() % 100))
+		_ = tree.Insert(&p)
 	}
-	tree.PrintTree2D(10)
-	fmt.Println("----------------------")
-	got, _ := tree.Get(pessoa{id: 836})
-	fmt.Println(got)
-	for i := 0; i < size*100; i++ {
-		_ = tree.Remove(pessoa{id: rand.Int() % (size * 100)})
-	}
-	fmt.Println("----------------------")
-	tree.PrintTree2D(10)
+	tree.PrintTree()
+	p := retrievePessoa(1410, tree)
+	p.nome = "isto é um nome dado"
+	p = retrievePessoa(1410, tree)
+	fmt.Println(*p)
+	fmt.Println(p.nome, p.id)
+	tree.PrintTree()
 }
 
 func main() {

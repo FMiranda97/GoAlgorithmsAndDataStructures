@@ -88,10 +88,10 @@ func TestSortPerformance(t *testing.T) {
 	fmt.Println("simple merge sort:", endMerge)
 
 	copy(p[:], randomArray[:])
-	startShell := time.Now()
-	_ = QuickSortDual(p[:])
-	endShell := time.Since(startShell)
-	fmt.Println("simple shell sort:", endShell)
+	startHeap := time.Now()
+	_ = HeapSort(p[:])
+	endHeap := time.Since(startHeap)
+	fmt.Println("heap sort:", endHeap)
 
 	if false {
 		t.Errorf("wtf")

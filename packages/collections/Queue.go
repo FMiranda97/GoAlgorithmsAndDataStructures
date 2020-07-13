@@ -22,7 +22,7 @@ func NewQueue() Queue {
 }
 
 // Method to insert cargo into queue
-func (queue *Queue) Append(cargo interface{}) {
+func (queue *Queue) Append(cargo *interface{}) {
 	newNode := node{
 		cargo: cargo,
 		next:  nil,

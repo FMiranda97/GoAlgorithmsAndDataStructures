@@ -21,13 +21,13 @@ func NewStack() Stack {
 }
 
 // Method to push cargo into stack
-func (stack *Stack) Push(cargo interface{}) {
+func (stack *Stack) Push(cargo *interface{}) {
 	stack.first = pushUtil(stack.first, cargo)
 	stack.count++
 }
 
 // Utility function for stack pushing
-func pushUtil(stack *node, cargo interface{}) *node {
+func pushUtil(stack *node, cargo *interface{}) *node {
 	var newNode node
 	newNode.cargo = cargo
 	if stack == nil {

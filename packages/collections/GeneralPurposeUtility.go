@@ -4,19 +4,25 @@ import (
 	"fmt"
 )
 
-func init() {
-
+type Sortable interface {
+	CompareTo(interface{}) int8
 }
 
 // General purpose structure for linear collections
 type node struct {
-	cargo interface{}
+	cargo *interface{}
 	next  *node
+}
+
+// General purpose structure for ordered linear collections
+type nodeOrder struct {
+	cargo *Sortable
+	next  *nodeOrder
 }
 
 // General purpose structure for binary tree collections with string as key
 type treeNode struct {
-	cargo  Sortable
+	cargo  *Sortable
 	height int
 	isRed  bool
 	left   *treeNode
@@ -30,7 +36,7 @@ func printTreeUtil(tree *treeNode) {
 		return
 	}
 	printTreeUtil(tree.left)
-	fmt.Println(tree.cargo)
+	fmt.Println(*tree.cargo)
 	printTreeUtil(tree.right)
 }
 
@@ -48,15 +54,15 @@ func printTree2DUtil(tree *treeNode, space int, spacing int) {
 	// Process right child first
 	printTree2DUtil(tree.right, space, spacing)
 
-	// Print current node after space
+	// Print current nodeOrder after space
 	// count
 	for i := spacing; i < space; i++ {
 		fmt.Print(" ")
 	}
 	if tree.parent == nil {
-		fmt.Println(tree.cargo, nil)
+		fmt.Println(*tree.cargo, nil)
 	} else {
-		fmt.Println(tree.cargo, tree.parent.cargo)
+		fmt.Println(*tree.cargo, tree.parent.cargo)
 	}
 	// Process left child
 
