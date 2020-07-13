@@ -19,6 +19,7 @@ type treeNode struct {
 	key    string
 	cargo  interface{}
 	height int
+	isRed  bool
 	left   *treeNode
 	right  *treeNode
 	parent *treeNode

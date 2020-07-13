@@ -52,24 +52,24 @@ func insertAVLTreeUtil(tree *treeNode, key string, cargo interface{}) (*treeNode
 
 	// Left Left Case
 	if diffHeight > 1 && tree.left != nil && key < tree.left.key {
-		return rightRotate(tree), err
+		return rightRotateAVL(tree), err
 	}
 
 	// Right Right Case
 	if diffHeight < -1 && tree.right != nil && key > tree.right.key {
-		return leftRotate(tree), err
+		return leftRotateAVL(tree), err
 	}
 
 	// Left Right Case
 	if diffHeight > 1 && tree.left != nil && key > tree.left.key {
-		tree.left = leftRotate(tree.left)
-		return rightRotate(tree), err
+		tree.left = leftRotateAVL(tree.left)
+		return rightRotateAVL(tree), err
 	}
 
 	// Right Left Case
 	if diffHeight < -1 && tree.right != nil && key < tree.right.key {
-		tree.right = rightRotate(tree.right)
-		return leftRotate(tree), err
+		tree.right = rightRotateAVL(tree.right)
+		return leftRotateAVL(tree), err
 	}
 	return tree, err
 }
@@ -92,7 +92,7 @@ func getDiffHeight(treeNode *treeNode) int {
 }
 
 // A utility function to right rotate subtree rooted with treeNode
-func rightRotate(treeNode *treeNode) *treeNode {
+func rightRotateAVL(treeNode *treeNode) *treeNode {
 	leftNode := treeNode.left
 	leftRightNode := leftNode.right
 
@@ -106,7 +106,7 @@ func rightRotate(treeNode *treeNode) *treeNode {
 }
 
 // A utility function to left rotate subtree rooted with treeNode
-func leftRotate(treeNode *treeNode) *treeNode {
+func leftRotateAVL(treeNode *treeNode) *treeNode {
 	rightNode := treeNode.right
 	rightLeftNode := rightNode.left
 
@@ -161,24 +161,24 @@ func removeAVLTreeUtil(tree *treeNode, key string) (*treeNode, error) {
 
 	// Left Left Case
 	if diffHeight > 1 && getDiffHeight(tree.left) >= 0 {
-		return rightRotate(tree), err
+		return rightRotateAVL(tree), err
 	}
 
 	// Left Right Case
 	if diffHeight > 1 && getDiffHeight(tree.left) < 0 {
-		tree.left = leftRotate(tree.left)
-		return rightRotate(tree), err
+		tree.left = leftRotateAVL(tree.left)
+		return rightRotateAVL(tree), err
 	}
 
 	// Right Right Case
 	if diffHeight < -1 && getDiffHeight(tree.right) <= 0 {
-		return leftRotate(tree), err
+		return leftRotateAVL(tree), err
 	}
 
 	// Right Left Case
 	if diffHeight < -1 && getDiffHeight(tree.right) > 0 {
-		tree.right = rightRotate(tree.right)
-		return leftRotate(tree), err
+		tree.right = rightRotateAVL(tree.right)
+		return leftRotateAVL(tree), err
 	}
 	return tree, err
 }
