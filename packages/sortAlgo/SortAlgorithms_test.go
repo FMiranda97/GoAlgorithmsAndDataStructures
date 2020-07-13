@@ -12,7 +12,7 @@ func TestSimpleSorts(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping testing in short mode")
 	}
-	var p1, p2, p3 [sizeSimple]pessoa
+	var p1, p2, p3, p4 [sizeSimple]pessoa
 	for i := 0; i < sizeSimple; i++ {
 		p1[i] = pessoa{
 			id: rand.Int() % (sizeSimple * 100),
@@ -20,14 +20,19 @@ func TestSimpleSorts(t *testing.T) {
 	}
 	copy(p2[:], p1[:])
 	copy(p3[:], p1[:])
+	copy(p4[:], p1[:])
 	_ = BubbleSort(p1[:])
 	_ = InsertionSort(p2[:])
 	_ = SelectionSort(p3[:])
+	_ = ShellSort(p4[:])
 	if !reflect.DeepEqual(p1, p2) {
 		t.Errorf("insertion sort failed")
 	}
 	if !reflect.DeepEqual(p1, p3) {
 		t.Errorf("selection sort failed")
+	}
+	if !reflect.DeepEqual(p1, p4) {
+		t.Errorf("shell sort failed")
 	}
 }
 
@@ -81,6 +86,12 @@ func TestSortPerformance(t *testing.T) {
 	_ = MergeSort(p[:])
 	endMerge := time.Since(startMerge)
 	fmt.Println("simple merge sort:", endMerge)
+
+	copy(p[:], randomArray[:])
+	startShell := time.Now()
+	_ = QuickSortDual(p[:])
+	endShell := time.Since(startShell)
+	fmt.Println("simple shell sort:", endShell)
 
 	if false {
 		t.Errorf("wtf")

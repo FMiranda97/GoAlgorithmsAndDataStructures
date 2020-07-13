@@ -94,6 +94,27 @@ func SelectionSort(arr interface{}) (e error) {
 	}
 }
 
+// Function to start shell sort in slice
+func ShellSort(arr interface{}) (e error) {
+	defer panicControl(&e)
+	if slice, _, err := sortSetup(arr); err == nil {
+		gapSize := slice.Len() / 2
+		for ; gapSize > 0; gapSize /= 2 {
+			for current := gapSize; current < slice.Len(); current++ {
+				valueSort := get(current, slice)
+				valuesComp := current - gapSize
+				for ; valuesComp >= 0 && valueSort.CompareTo(get(valuesComp, slice)) < 0; valuesComp -= gapSize {
+					slice.Index(valuesComp + gapSize).Set(slice.Index(valuesComp))
+				}
+				slice.Index(valuesComp + gapSize).Set(reflect.ValueOf(valueSort))
+			}
+		}
+		return nil
+	} else {
+		return err
+	}
+}
+
 // Default function to sort in slice
 func Sort(arr interface{}) error {
 	return QuickSortDualC(arr)
