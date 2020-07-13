@@ -4,6 +4,10 @@ import (
 	"fmt"
 )
 
+func init() {
+
+}
+
 // General purpose structure for linear collections
 type node struct {
 	cargo interface{}
