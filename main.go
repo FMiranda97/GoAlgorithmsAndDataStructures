@@ -1,10 +1,9 @@
 package main
 
 import (
-	. "./packages/sortAlgo"
+	. "./packages/collections"
 	"fmt"
 	"math/rand"
-	"time"
 )
 
 type pessoa struct {
@@ -22,15 +21,26 @@ func (p pessoa) CompareTo(t interface{}) int8 {
 	}
 }
 
-func main() {
-	const size = 10_000_000
-	var arr [size]pessoa
+func testCollection() {
+	const size = 20
+	tree := NewAVLTree()
 	for i := 0; i < size; i++ {
-		arr[i] = pessoa{
+		p := pessoa{
 			id: rand.Int() % (size * 100),
 		}
+		_ = tree.Insert(p)
 	}
-	start := time.Now()
-	_ = Sort(arr[:])
-	fmt.Println("sort time:", time.Since(start))
+	tree.PrintTree2D(10)
+	fmt.Println("----------------------")
+	got, _ := tree.Get(pessoa{id: 836})
+	fmt.Println(got)
+	for i := 0; i < size*100; i++ {
+		_ = tree.Remove(pessoa{id: rand.Int() % (size * 100)})
+	}
+	fmt.Println("----------------------")
+	tree.PrintTree2D(10)
+}
+
+func main() {
+	testCollection()
 }

@@ -16,23 +16,12 @@ type node struct {
 
 // General purpose structure for binary tree collections with string as key
 type treeNode struct {
-	key    string
-	cargo  interface{}
+	cargo  Sortable
 	height int
 	isRed  bool
 	left   *treeNode
 	right  *treeNode
 	parent *treeNode
-}
-
-// General purpose structure for binary tree collections with int as key
-type treeNodeI struct {
-	key    int64
-	cargo  interface{}
-	height int
-	left   *treeNodeI
-	right  *treeNodeI
-	parent *treeNodeI
 }
 
 // General purpose binary tree printing utility function
@@ -41,18 +30,8 @@ func printTreeUtil(tree *treeNode) {
 		return
 	}
 	printTreeUtil(tree.left)
-	fmt.Println(tree.key, tree.cargo)
+	fmt.Println(tree.cargo)
 	printTreeUtil(tree.right)
-}
-
-// General purpose binary tree printing utility function
-func printTreeIUtil(tree *treeNodeI) {
-	if tree == nil {
-		return
-	}
-	printTreeIUtil(tree.left)
-	fmt.Println(tree.key, tree.cargo)
-	printTreeIUtil(tree.right)
 }
 
 // General purpose 2D printing utility function
@@ -82,35 +61,6 @@ func printTree2DUtil(tree *treeNode, space int, spacing int) {
 	// Process left child
 
 	printTree2DUtil(tree.left, space, spacing)
-}
-
-// General purpose 2D printing utility function
-func printTreeI2DUtil(tree *treeNodeI, space int, spacing int) {
-
-	// Base case
-	if tree == nil {
-		return
-	}
-
-	// Increase distance between levels
-	space += spacing
-
-	// Process right child first
-	printTreeI2DUtil(tree.right, space, spacing)
-
-	// Print current node after space
-	// count
-	for i := spacing; i < space; i++ {
-		fmt.Print(" ")
-	}
-	if tree.parent == nil {
-		fmt.Println(tree.cargo, nil)
-	} else {
-		fmt.Println(tree.cargo, tree.parent.cargo)
-	}
-	// Process left child
-
-	printTreeI2DUtil(tree.left, space, spacing)
 }
 
 // general purpose utility to find max of two int values
