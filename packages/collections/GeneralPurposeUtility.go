@@ -16,13 +16,13 @@ type node struct {
 
 // General purpose structure for ordered linear collections
 type nodeOrder struct {
-	cargo *Sortable
+	cargo Sortable
 	next  *nodeOrder
 }
 
 // General purpose structure for binary tree collections with string as key
 type treeNode struct {
-	cargo  *Sortable
+	cargo  Sortable
 	height int
 	isRed  bool
 	left   *treeNode
@@ -36,7 +36,7 @@ func printTreeUtil(tree *treeNode) {
 		return
 	}
 	printTreeUtil(tree.left)
-	fmt.Println(*tree.cargo)
+	fmt.Println(tree.cargo)
 	printTreeUtil(tree.right)
 }
 
@@ -60,9 +60,9 @@ func printTree2DUtil(tree *treeNode, space int, spacing int) {
 		fmt.Print(" ")
 	}
 	if tree.parent == nil {
-		fmt.Println(*tree.cargo, nil)
+		fmt.Println(tree.cargo, nil)
 	} else {
-		fmt.Println(*tree.cargo, tree.parent.cargo)
+		fmt.Println(tree.cargo, tree.parent.cargo)
 	}
 	// Process left child
 

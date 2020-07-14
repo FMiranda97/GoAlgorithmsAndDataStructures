@@ -21,7 +21,7 @@ func NewOrderedLinkedList() OrderedLinkedList {
 }
 
 // Method to insert cargo into linked list at a given position
-func (list *OrderedLinkedList) Insert(cargo *Sortable) error {
+func (list *OrderedLinkedList) Insert(cargo Sortable) error {
 	newNode := nodeOrder{
 		cargo: cargo,
 		next:  nil,
@@ -30,8 +30,8 @@ func (list *OrderedLinkedList) Insert(cargo *Sortable) error {
 		list.count++
 		list.first = &newNode
 		return nil
-	} else if (*cargo).CompareTo(*list.first.cargo) <= 0 {
-		if (*cargo).CompareTo(*list.first.cargo) == 0 {
+	} else if cargo.CompareTo(list.first.cargo) <= 0 {
+		if cargo.CompareTo(list.first.cargo) == 0 {
 			return errors.New("element already exists")
 		} else {
 			newNode.next = list.first
@@ -40,9 +40,9 @@ func (list *OrderedLinkedList) Insert(cargo *Sortable) error {
 		}
 	}
 	var aux *nodeOrder
-	for aux = list.first; aux.next != nil && (*cargo).CompareTo(*aux.next.cargo) > 0; aux = aux.next {
+	for aux = list.first; aux.next != nil && cargo.CompareTo(aux.next.cargo) > 0; aux = aux.next {
 	}
-	if aux.next != nil && (*cargo).CompareTo(*aux.next.cargo) == 0 {
+	if aux.next != nil && cargo.CompareTo(aux.next.cargo) == 0 {
 		return errors.New("element already exists")
 	}
 	newNode.next = aux.next
@@ -57,14 +57,14 @@ func (list *OrderedLinkedList) Remove(cargo Sortable) error {
 	if list.first == nil {
 		return errors.New("empty list")
 	}
-	if cargo.CompareTo(*list.first.cargo) == 0 {
+	if cargo.CompareTo(list.first.cargo) == 0 {
 		list.first = list.first.next
 		list.count--
 		return nil
 	}
-	for aux = list.first; aux.next != nil && cargo.CompareTo(*aux.next.cargo) > 0; aux = aux.next {
+	for aux = list.first; aux.next != nil && cargo.CompareTo(aux.next.cargo) > 0; aux = aux.next {
 	}
-	if aux.next != nil && cargo.CompareTo(*aux.next.cargo) == 0 {
+	if aux.next != nil && cargo.CompareTo(aux.next.cargo) == 0 {
 		aux.next = aux.next.next
 		list.count--
 		return nil
@@ -80,15 +80,15 @@ func (list OrderedLinkedList) PrintList() {
 		fmt.Println("empty list")
 	}
 	for i := aux; i != nil; i = i.next {
-		fmt.Println(*i.cargo)
+		fmt.Println(i.cargo)
 	}
 }
 
 // Method to retrieve cargo at a given position.
 // Should not be used to iterate
-func (list *OrderedLinkedList) Get(cargo Sortable) (*Sortable, error) {
+func (list *OrderedLinkedList) Get(cargo Sortable) (Sortable, error) {
 	for aux := list.first; aux != nil; aux = aux.next {
-		if cargo.CompareTo(*aux.cargo) == 0 {
+		if cargo.CompareTo(aux.cargo) == 0 {
 			return aux.cargo, nil
 		}
 	}
@@ -102,9 +102,9 @@ func (list OrderedLinkedList) Len() int {
 
 // Returns an iterator function. Each call to the return function returns the next element.
 // Once last element is reached returns nil forever
-func (list OrderedLinkedList) GetIterator() func() *Sortable {
+func (list OrderedLinkedList) GetIterator() func() Sortable {
 	elem := list.first
-	return func() *Sortable {
+	return func() Sortable {
 		if elem == nil {
 			return nil
 		}
@@ -115,8 +115,8 @@ func (list OrderedLinkedList) GetIterator() func() *Sortable {
 }
 
 // Builds and returns an array with cargos present in OrderedLinkedList
-func (list OrderedLinkedList) GetArray() []*Sortable {
-	arr := make([]*Sortable, list.count)
+func (list OrderedLinkedList) GetArray() []Sortable {
+	arr := make([]Sortable, list.count)
 	it := list.GetIterator()
 	for elem, i := it(), 0; elem != nil; elem, i = it(), i+1 {
 		arr[i] = elem

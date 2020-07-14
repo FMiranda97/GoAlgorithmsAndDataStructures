@@ -19,7 +19,7 @@ func NewBinaryTree() BinaryTree {
 }
 
 // Method to insert cargo into binary tree
-func (tree *BinaryTree) Insert(cargo *Sortable) error {
+func (tree *BinaryTree) Insert(cargo Sortable) error {
 	var err error
 	tree.root, err = insertBinaryTreeUtil(tree.root, cargo)
 	if err == nil {
@@ -29,7 +29,7 @@ func (tree *BinaryTree) Insert(cargo *Sortable) error {
 }
 
 // Utility function for simple binary tree insertion
-func insertBinaryTreeUtil(tree *treeNode, cargo *Sortable) (*treeNode, error) {
+func insertBinaryTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 	var err error
 	if tree == nil { //reached insertion place
 		newNode := treeNode{
@@ -37,9 +37,9 @@ func insertBinaryTreeUtil(tree *treeNode, cargo *Sortable) (*treeNode, error) {
 		}
 		return &newNode, nil
 	}
-	if (*cargo).CompareTo(*tree.cargo) < 0 {
+	if cargo.CompareTo(tree.cargo) < 0 {
 		tree.left, err = insertBinaryTreeUtil(tree.left, cargo)
-	} else if (*cargo).CompareTo(*tree.cargo) > 0 {
+	} else if cargo.CompareTo(tree.cargo) > 0 {
 		tree.right, err = insertBinaryTreeUtil(tree.right, cargo)
 	} else {
 		return tree, errors.New("element with this key already exists")
@@ -63,9 +63,9 @@ func removeBinaryTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 		return tree, errors.New("no element found with given key")
 	}
 	var err error
-	if cargo.CompareTo(*tree.cargo) < 0 {
+	if cargo.CompareTo(tree.cargo) < 0 {
 		tree.left, err = removeBinaryTreeUtil(tree.left, cargo)
-	} else if cargo.CompareTo(*tree.cargo) > 0 {
+	} else if cargo.CompareTo(tree.cargo) > 0 {
 		tree.right, err = removeBinaryTreeUtil(tree.right, cargo)
 	} else {
 		if tree.left == nil {
@@ -77,13 +77,13 @@ func removeBinaryTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 		for rightmost = tree.left; rightmost.right != nil; rightmost = rightmost.right {
 		}
 		tree.cargo = rightmost.cargo
-		tree.left, err = removeBinaryTreeUtil(tree.left, *rightmost.cargo)
+		tree.left, err = removeBinaryTreeUtil(tree.left, rightmost.cargo)
 	}
 	return tree, err
 }
 
 // Method to retrieve cargo with a given key
-func (tree BinaryTree) Get(cargo Sortable) (*Sortable, error) {
+func (tree BinaryTree) Get(cargo Sortable) (Sortable, error) {
 	found, err := getBinaryTreeUtil(tree.root, cargo)
 	if err == nil {
 		return found.cargo, err
@@ -96,9 +96,9 @@ func getBinaryTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 	if tree == nil {
 		return nil, errors.New("no element found with given key")
 	}
-	if cargo.CompareTo(*tree.cargo) < 0 {
+	if cargo.CompareTo(tree.cargo) < 0 {
 		return getBinaryTreeUtil(tree.left, cargo)
-	} else if cargo.CompareTo(*tree.cargo) > 0 {
+	} else if cargo.CompareTo(tree.cargo) > 0 {
 		return getBinaryTreeUtil(tree.right, cargo)
 	} else {
 		return tree, nil

@@ -32,7 +32,7 @@ func createPessoa(id int, nome string) *pessoa { // utility
 
 func retrievePessoa(id int, tree AVLTree) *pessoa { // utility
 	a, _ := tree.Get(pessoa{id: id})
-	return (*a).(*pessoa)
+	return a.(*pessoa)
 }
 
 func testCollection() {
@@ -40,19 +40,17 @@ func testCollection() {
 	tree := NewAVLTree()
 	for i := 0; i < size; i++ {
 		var p Sortable
-		p = &pessoa{
-			id:   rand.Int() % (size * 100),
-			nome: string(rand.Int() % 100),
-		}
-		//p = createPessoa(rand.Int() % (size * 100), string(rand.Int() % 100))
-		_ = tree.Insert(&p)
+		p = createPessoa(rand.Int()%(size*100), string(rand.Int()%100))
+		_ = tree.Insert(p)
 	}
 	tree.PrintTree()
 	p := retrievePessoa(1410, tree)
 	p.nome = "isto é um nome dado"
 	p = retrievePessoa(1410, tree)
+	fmt.Println("------------------")
 	fmt.Println(*p)
 	fmt.Println(p.nome, p.id)
+	fmt.Println("------------------")
 	tree.PrintTree()
 }
 
