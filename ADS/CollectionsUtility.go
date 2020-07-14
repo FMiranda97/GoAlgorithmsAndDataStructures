@@ -1,16 +1,26 @@
-package collections
+package ADS
 
 import (
+	"errors"
 	"fmt"
 )
+
+// Interface that must be implemented by elements of slices using this package
+// CompareTo must return -1, 0 or 1 if target is less than argument, equal or greater respectively
 
 type Sortable interface {
 	CompareTo(interface{}) int8
 }
 
+func panicControl(e *error) {
+	if r := recover(); r != nil {
+		*e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
+	}
+}
+
 // General purpose structure for linear collections
 type node struct {
-	cargo *interface{}
+	cargo interface{}
 	next  *node
 }
 

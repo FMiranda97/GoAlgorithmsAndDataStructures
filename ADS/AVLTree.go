@@ -1,26 +1,31 @@
-package collections
+package ADS
 
 import (
 	"errors"
+	"reflect"
 )
 
 // AVL tree object
-type AVLTreeS struct {
+type AVLTree struct {
 	root  *treeNode
 	count int
 }
 
 // AVL tree constructor
-func NewAVLTreeS() AVLTreeS {
-	return AVLTreeS{
+func NewAVLTree() AVLTree {
+	return AVLTree{
 		root:  nil,
 		count: 0,
 	}
 }
 
 // Method to insert cargo into AVL tree
-func (tree *AVLTreeS) Insert(key string, cargo interface{}) (err error) {
-	tree.root, err = insertAVLTreeSUtil(tree.root, key, cargo)
+func (tree *AVLTree) Insert(cargo Sortable) (err error) {
+	defer panicControl(&err)
+	if tree.count > 0 && reflect.TypeOf(tree.root.cargo) != reflect.TypeOf(cargo) {
+		return errors.New("inserted cargo not of same type as previously inserted cargo")
+	}
+	tree.root, err = insertAVLTreeUtil(tree.root, cargo)
 	if err == nil {
 		tree.count++
 	}
@@ -28,20 +33,19 @@ func (tree *AVLTreeS) Insert(key string, cargo interface{}) (err error) {
 }
 
 // Utility function for AVL tree insertion
-func insertAVLTreeSUtil(tree *treeNode, key string, cargo interface{}) (*treeNode, error) {
+func insertAVLTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 	var err error
 	if tree == nil {
 		newNode := treeNode{
-			key:    key,
 			cargo:  cargo,
 			height: 1,
 		}
 		return &newNode, nil
 	}
-	if key < tree.key {
-		tree.left, err = insertAVLTreeSUtil(tree.left, key, cargo)
-	} else if key > tree.key {
-		tree.right, err = insertAVLTreeSUtil(tree.right, key, cargo)
+	if cargo.CompareTo(tree.cargo) < 0 {
+		tree.left, err = insertAVLTreeUtil(tree.left, cargo)
+	} else if cargo.CompareTo(tree.cargo) > 0 {
+		tree.right, err = insertAVLTreeUtil(tree.right, cargo)
 	} else { // Equal keys are not allowed in BST
 		return tree, errors.New("element with this key already exists")
 	}
@@ -51,23 +55,23 @@ func insertAVLTreeSUtil(tree *treeNode, key string, cargo interface{}) (*treeNod
 	diffHeight := getDiffHeight(tree)
 
 	// Left Left Case
-	if diffHeight > 1 && tree.left != nil && key < tree.left.key {
+	if diffHeight > 1 && tree.left != nil && cargo.CompareTo(tree.left.cargo) < 0 {
 		return rightRotateAVL(tree), err
 	}
 
 	// Right Right Case
-	if diffHeight < -1 && tree.right != nil && key > tree.right.key {
+	if diffHeight < -1 && tree.right != nil && cargo.CompareTo(tree.right.cargo) > 0 {
 		return leftRotateAVL(tree), err
 	}
 
 	// Left Right Case
-	if diffHeight > 1 && tree.left != nil && key > tree.left.key {
+	if diffHeight > 1 && tree.left != nil && cargo.CompareTo(tree.left.cargo) > 0 {
 		tree.left = leftRotateAVL(tree.left)
 		return rightRotateAVL(tree), err
 	}
 
 	// Right Left Case
-	if diffHeight < -1 && tree.right != nil && key < tree.right.key {
+	if diffHeight < -1 && tree.right != nil && cargo.CompareTo(tree.right.cargo) < 0 {
 		tree.right = rightRotateAVL(tree.right)
 		return leftRotateAVL(tree), err
 	}
@@ -83,7 +87,7 @@ func getHeight(treeNode *treeNode) int {
 	}
 }
 
-// Get height difference of node treeNode
+// Get height difference of nodeOrder treeNode
 func getDiffHeight(treeNode *treeNode) int {
 	if treeNode == nil {
 		return 0
@@ -120,38 +124,37 @@ func leftRotateAVL(treeNode *treeNode) *treeNode {
 }
 
 // Method to remove cargo from an AVL tree
-func (tree *AVLTreeS) Remove(key string) error {
-	var err error
-	tree.root, err = removeAVLTreeSUtil(tree.root, key)
-	if err == nil {
+func (tree *AVLTree) Remove(cargo Sortable) (e error) {
+	defer panicControl(&e)
+	tree.root, e = removeAVLTreeUtil(tree.root, cargo)
+	if e == nil {
 		tree.count--
 	}
-	return err
+	return e
 }
 
 // Remove cargo from AVL tree with a given key
-func removeAVLTreeSUtil(tree *treeNode, key string) (*treeNode, error) {
+func removeAVLTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 	if tree == nil {
 		return tree, errors.New("no element found with given key")
 	}
 	var err error
-	if key < tree.key {
-		tree.left, err = removeAVLTreeSUtil(tree.left, key)
-	} else if key > tree.key {
-		tree.right, err = removeAVLTreeSUtil(tree.right, key)
+	if cargo.CompareTo(tree.cargo) < 0 {
+		tree.left, err = removeAVLTreeUtil(tree.left, cargo)
+	} else if cargo.CompareTo(tree.cargo) > 0 {
+		tree.right, err = removeAVLTreeUtil(tree.right, cargo)
 	} else {
-		// node with only one child or no child
+		// nodeOrder with only one child or no child
 		if tree.left == nil {
 			return tree.right, nil
 		} else if tree.right == nil {
 			return tree.left, nil
-		} else { // node with two children
+		} else { // nodeOrder with two children
 			var rightmost *treeNode
 			for rightmost = tree.left; rightmost.right != nil; rightmost = rightmost.right {
 			}
-			tree.key = rightmost.key
 			tree.cargo = rightmost.cargo
-			tree.left, err = removeAVLTreeSUtil(tree.left, rightmost.key)
+			tree.left, err = removeAVLTreeUtil(tree.left, rightmost.cargo)
 		}
 	}
 
@@ -183,19 +186,29 @@ func removeAVLTreeSUtil(tree *treeNode, key string) (*treeNode, error) {
 	return tree, err
 }
 
+// Method to retrieve cargo with a given key
+func (tree AVLTree) Get(cargo Sortable) (_ Sortable, e error) {
+	defer panicControl(&e)
+	found, err := getBinaryTreeUtil(tree.root, cargo)
+	if err == nil {
+		return found.cargo, err
+	}
+	return nil, err
+}
+
 // Method returning number of elements in tree
-func (tree AVLTreeS) Count() int {
+func (tree AVLTree) Count() int {
 	return tree.count
 }
 
 // Method to print AVL tree contents
-func (tree AVLTreeS) PrintTree() {
+func (tree AVLTree) Print() {
 	printTreeUtil(tree.root)
 }
 
 // Method to print AVL tree layout
 // Passed argument defines how much spacing there is between tree levels
-func (tree AVLTreeS) PrintTree2D(spacing int) {
+func (tree AVLTree) PrintTree2D(spacing int) {
 	// Pass initial space count as 0
 	printTree2DUtil(tree.root, 0, spacing)
 }

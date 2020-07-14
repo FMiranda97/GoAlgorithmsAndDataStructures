@@ -1,8 +1,9 @@
-package collections
+package ADS
 
 import (
 	"errors"
 	"fmt"
+	"reflect"
 )
 
 // Linked list object
@@ -21,7 +22,11 @@ func NewOrderedLinkedList() OrderedLinkedList {
 }
 
 // Method to insert cargo into linked list at a given position
-func (list *OrderedLinkedList) Insert(cargo Sortable) error {
+func (list *OrderedLinkedList) Insert(cargo Sortable) (e error) {
+	defer panicControl(&e)
+	if list.count > 0 && reflect.TypeOf(list.first.cargo) != reflect.TypeOf(cargo) {
+		return errors.New("inserted cargo not of same type as previously inserted cargo")
+	}
 	newNode := nodeOrder{
 		cargo: cargo,
 		next:  nil,
@@ -34,6 +39,7 @@ func (list *OrderedLinkedList) Insert(cargo Sortable) error {
 		if cargo.CompareTo(list.first.cargo) == 0 {
 			return errors.New("element already exists")
 		} else {
+			list.count++
 			newNode.next = list.first
 			list.first = &newNode
 			return nil
@@ -52,7 +58,8 @@ func (list *OrderedLinkedList) Insert(cargo Sortable) error {
 }
 
 // Removes cargo from linked list at index
-func (list *OrderedLinkedList) Remove(cargo Sortable) error {
+func (list *OrderedLinkedList) Remove(cargo Sortable) (e error) {
+	defer panicControl(&e)
 	var aux *nodeOrder
 	if list.first == nil {
 		return errors.New("empty list")
@@ -74,7 +81,7 @@ func (list *OrderedLinkedList) Remove(cargo Sortable) error {
 }
 
 // Method to display linked list contents
-func (list OrderedLinkedList) PrintList() {
+func (list OrderedLinkedList) Print() {
 	aux := list.first
 	if aux == nil {
 		fmt.Println("empty list")
@@ -86,7 +93,8 @@ func (list OrderedLinkedList) PrintList() {
 
 // Method to retrieve cargo at a given position.
 // Should not be used to iterate
-func (list *OrderedLinkedList) Get(cargo Sortable) (Sortable, error) {
+func (list *OrderedLinkedList) Get(cargo Sortable) (_ Sortable, e error) {
+	defer panicControl(&e)
 	for aux := list.first; aux != nil; aux = aux.next {
 		if cargo.CompareTo(aux.cargo) == 0 {
 			return aux.cargo, nil

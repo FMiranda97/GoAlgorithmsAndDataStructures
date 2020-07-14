@@ -1,4 +1,4 @@
-package sortAlgo
+package ADS
 
 import "reflect"
 

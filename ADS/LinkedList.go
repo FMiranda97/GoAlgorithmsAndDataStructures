@@ -1,4 +1,4 @@
-package collections
+package ADS
 
 import (
 	"errors"
@@ -22,7 +22,7 @@ func NewLinkedList() LinkedList {
 }
 
 // Method to insert cargo at end of linked list
-func (list *LinkedList) Append(cargo *interface{}) {
+func (list *LinkedList) Append(cargo interface{}) {
 	newNode := node{
 		cargo: cargo,
 		next:  nil,
@@ -38,7 +38,7 @@ func (list *LinkedList) Append(cargo *interface{}) {
 }
 
 // Method to insert cargo at beginning of linked list
-func (list *LinkedList) Prepend(cargo *interface{}) {
+func (list *LinkedList) Prepend(cargo interface{}) {
 	newNode := node{
 		cargo: cargo,
 		next:  nil,
@@ -52,7 +52,7 @@ func (list *LinkedList) Prepend(cargo *interface{}) {
 }
 
 // Method to insert cargo into linked list at a given position
-func (list *LinkedList) Insert(cargo *interface{}, index int) error {
+func (list *LinkedList) Insert(cargo interface{}, index int) error {
 	if list.count < index {
 		return errors.New("index out of bounds")
 	}

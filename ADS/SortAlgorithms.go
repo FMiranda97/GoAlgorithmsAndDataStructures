@@ -1,18 +1,11 @@
-package sortAlgo
+package ADS
 
 //TODO shell, heap
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 )
-
-// Interface that must be implemented by elements of slices using this package
-// CompareTo must return -1, 0 or 1 if target is less than argument, equal or greater respectively
-type Sortable interface {
-	CompareTo(interface{}) int8
-}
 
 // Utility function to check if data types are correct and returning function to swap elements
 func sortSetup(arr interface{}) (reflect.Value, func(int, int), error) {
@@ -28,12 +21,6 @@ func sortSetup(arr interface{}) (reflect.Value, func(int, int), error) {
 // Utility function to return generic element in slice
 func get(index int, t reflect.Value) Sortable {
 	return t.Index(index).Interface().(Sortable)
-}
-
-func panicControl(e *error) {
-	if r := recover(); r != nil {
-		*e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
-	}
 }
 
 // Function to start bubble sort in slice

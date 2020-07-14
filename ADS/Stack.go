@@ -1,5 +1,5 @@
 // Package collections provides constructs for storing and searching data
-package collections
+package ADS
 
 import (
 	"errors"

@@ -1,42 +1,37 @@
-package sortAlgo
+package ADS
 
 import (
 	"reflect"
 	"testing"
 )
 
-func TestMain(m *testing.M) {
-	setup()
-	m.Run()
-}
-
-func TestQuickSort(t *testing.T) {
+func TestQuickSortDual(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping testing in short mode")
 	}
-	err := QuickSort(invalidArray[:])
+	err := QuickSortDual(invalidArray[:])
 	if err == nil {
 		t.Errorf("did not report error on invalid input")
 	}
 	var p [sizeEfficient]pessoa
 	copy(p[:], randomArray[:])
-	_ = QuickSort(p[:])
+	_ = QuickSortDual(p[:])
 	if !reflect.DeepEqual(sortedArray, p) {
 		t.Errorf("sort incorrect")
 	}
 }
 
-func TestQuickSortConcurrent(t *testing.T) {
+func TestQuickSortDualConcurrent(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping testing in short mode")
 	}
-	err := QuickSortC(invalidArray[:])
+	err := QuickSortDualC(invalidArray[:])
 	if err == nil {
 		t.Errorf("did not report error on invalid input")
 	}
 	var p [sizeEfficient]pessoa
 	copy(p[:], randomArray[:])
-	_ = QuickSortC(p[:])
+	_ = QuickSortDualC(p[:])
 	if !reflect.DeepEqual(sortedArray, p) {
 		t.Errorf("sort incorrect")
 	}

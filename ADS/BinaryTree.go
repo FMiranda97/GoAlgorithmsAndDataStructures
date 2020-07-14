@@ -1,7 +1,8 @@
-package collections
+package ADS
 
 import (
 	"errors"
+	"reflect"
 )
 
 // Simple binary tree object
@@ -19,13 +20,16 @@ func NewBinaryTree() BinaryTree {
 }
 
 // Method to insert cargo into binary tree
-func (tree *BinaryTree) Insert(cargo Sortable) error {
-	var err error
-	tree.root, err = insertBinaryTreeUtil(tree.root, cargo)
-	if err == nil {
+func (tree *BinaryTree) Insert(cargo Sortable) (e error) {
+	defer panicControl(&e)
+	if tree.count > 0 && reflect.TypeOf(tree.root.cargo) != reflect.TypeOf(cargo) {
+		return errors.New("inserted cargo not of same type as previously inserted cargo")
+	}
+	tree.root, e = insertBinaryTreeUtil(tree.root, cargo)
+	if e == nil {
 		tree.count++
 	}
-	return err
+	return e
 }
 
 // Utility function for simple binary tree insertion
@@ -48,8 +52,8 @@ func insertBinaryTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 }
 
 // Method to remove cargo from simple binary tree
-func (tree *BinaryTree) Remove(cargo Sortable) error {
-	var err error
+func (tree *BinaryTree) Remove(cargo Sortable) (err error) {
+	defer panicControl(&err)
 	tree.root, err = removeBinaryTreeUtil(tree.root, cargo)
 	if err == nil {
 		tree.count--
@@ -83,7 +87,8 @@ func removeBinaryTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 }
 
 // Method to retrieve cargo with a given key
-func (tree BinaryTree) Get(cargo Sortable) (Sortable, error) {
+func (tree BinaryTree) Get(cargo Sortable) (_ Sortable, err error) {
+	defer panicControl(&err)
 	found, err := getBinaryTreeUtil(tree.root, cargo)
 	if err == nil {
 		return found.cargo, err
@@ -111,7 +116,7 @@ func (tree BinaryTree) Count() int {
 }
 
 // Method to print simple binary tree contents
-func (tree BinaryTree) PrintTree() {
+func (tree BinaryTree) Print() {
 	printTreeUtil(tree.root)
 }
 

@@ -1,4 +1,4 @@
-package collections
+package ADS
 
 import (
 	"errors"
@@ -22,7 +22,7 @@ func NewDeque() Deque {
 }
 
 // Method to insert cargo at end of deque
-func (deque *Deque) Append(cargo *interface{}) {
+func (deque *Deque) Append(cargo interface{}) {
 	newNode := node{
 		cargo: cargo,
 		next:  nil,
@@ -38,7 +38,7 @@ func (deque *Deque) Append(cargo *interface{}) {
 }
 
 // Method to insert cargo at beginning of deque
-func (deque *Deque) Prepend(cargo *interface{}) {
+func (deque *Deque) Prepend(cargo interface{}) {
 	newNode := node{
 		cargo: cargo,
 		next:  nil,
