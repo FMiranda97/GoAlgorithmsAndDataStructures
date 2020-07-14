@@ -6,9 +6,9 @@ import (
 	"sync"
 )
 
-// Function to start merge sort in slice using 2 pivots
+// Function to start quick sort in slice using 2 pivots
 func QuickSortDual(arr interface{}) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		quickSortDual(0, slice.Len()-1, slice, swap)
 		return err
@@ -17,7 +17,7 @@ func QuickSortDual(arr interface{}) (e error) {
 	}
 }
 
-// Utility function to perform merge sort in slice
+// Utility function to perform quick sort in slice
 func quickSortDual(l int, r int, slice reflect.Value, swap func(int, int)) {
 	if l < r {
 		lp, rp := partitionDual(l, r, slice, swap)
@@ -63,9 +63,9 @@ func partitionDual(low int, high int, slice reflect.Value, swap func(int, int)) 
 	return j, g
 }
 
-// Function to start merge sort in slice using 2 pivots
+// Function to start quick sort in slice using 2 pivots and concurrency
 func QuickSortDualC(arr interface{}) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		quickSortDualC(0, slice.Len()-1, slice, swap)
 		return err
@@ -74,7 +74,7 @@ func QuickSortDualC(arr interface{}) (e error) {
 	}
 }
 
-// Utility function to perform merge sort in slice
+// Utility function to perform quick sort in slice using 2 pivots and concurrency
 func quickSortDualC(l int, r int, slice reflect.Value, swap func(int, int)) {
 	if l < r {
 		lp, rp := partitionDual(l, r, slice, swap)

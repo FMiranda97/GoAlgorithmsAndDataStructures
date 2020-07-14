@@ -21,7 +21,7 @@ func NewBinaryTree() BinaryTree {
 
 // Method to insert cargo into binary tree
 func (tree *BinaryTree) Insert(cargo Sortable) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if tree.count > 0 && reflect.TypeOf(tree.root.cargo) != reflect.TypeOf(cargo) {
 		return errors.New("inserted cargo not of same type as previously inserted cargo")
 	}
@@ -53,7 +53,7 @@ func insertBinaryTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 
 // Method to remove cargo from simple binary tree
 func (tree *BinaryTree) Remove(cargo Sortable) (err error) {
-	defer panicControl(&err)
+	defer catch(&err)
 	tree.root, err = removeBinaryTreeUtil(tree.root, cargo)
 	if err == nil {
 		tree.count--
@@ -86,9 +86,9 @@ func removeBinaryTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 	return tree, err
 }
 
-// Method to retrieve cargo with a given key
+// Method to retrieve cargo from BinaryTree
 func (tree BinaryTree) Get(cargo Sortable) (_ Sortable, err error) {
-	defer panicControl(&err)
+	defer catch(&err)
 	found, err := getBinaryTreeUtil(tree.root, cargo)
 	if err == nil {
 		return found.cargo, err

@@ -25,7 +25,7 @@ func get(index int, t reflect.Value) Sortable {
 
 // Function to start bubble sort in slice
 func BubbleSort(arr interface{}) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		for i := 0; i < slice.Len()-1; i++ {
 			for j := 0; j < slice.Len()-1; j++ {
@@ -43,7 +43,7 @@ func BubbleSort(arr interface{}) (e error) {
 
 // Function to start insertion sort in slice
 func InsertionSort(arr interface{}) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if slice, _, err := sortSetup(arr); err == nil {
 		for i := 1; i < slice.Len(); i++ {
 			key := get(i, slice)
@@ -60,9 +60,9 @@ func InsertionSort(arr interface{}) (e error) {
 	}
 }
 
-// Function to start insertion sort in slice
+// Function to start selection sort in slice
 func SelectionSort(arr interface{}) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		for i := 0; i < slice.Len()-1; i++ {
 			min := i
@@ -83,7 +83,7 @@ func SelectionSort(arr interface{}) (e error) {
 
 // Function to start shell sort in slice
 func ShellSort(arr interface{}) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if slice, _, err := sortSetup(arr); err == nil {
 		gapSize := slice.Len() / 2
 		for ; gapSize > 0; gapSize /= 2 {

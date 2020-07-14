@@ -23,7 +23,7 @@ func NewOrderedLinkedList() OrderedLinkedList {
 
 // Method to insert cargo into linked list at a given position
 func (list *OrderedLinkedList) Insert(cargo Sortable) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if list.count > 0 && reflect.TypeOf(list.first.cargo) != reflect.TypeOf(cargo) {
 		return errors.New("inserted cargo not of same type as previously inserted cargo")
 	}
@@ -59,7 +59,7 @@ func (list *OrderedLinkedList) Insert(cargo Sortable) (e error) {
 
 // Removes cargo from linked list at index
 func (list *OrderedLinkedList) Remove(cargo Sortable) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	var aux *nodeOrder
 	if list.first == nil {
 		return errors.New("empty list")
@@ -94,7 +94,7 @@ func (list OrderedLinkedList) Print() {
 // Method to retrieve cargo at a given position.
 // Should not be used to iterate
 func (list *OrderedLinkedList) Get(cargo Sortable) (_ Sortable, e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	for aux := list.first; aux != nil; aux = aux.next {
 		if cargo.CompareTo(aux.cargo) == 0 {
 			return aux.cargo, nil

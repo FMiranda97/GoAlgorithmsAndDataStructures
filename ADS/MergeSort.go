@@ -7,7 +7,7 @@ import (
 
 // Function to start merge sort in slice
 func MergeSort(arr interface{}) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if slice, _, err := sortSetup(arr); err == nil {
 		mergeSort(0, slice.Len()-1, slice)
 		return err
@@ -65,9 +65,9 @@ func merge(l int, m int, r int, slice reflect.Value) {
 	}
 }
 
-// Function to start merge sort in slice
+// Function to start merge sort in slice using concurrency
 func MergeSortC(arr interface{}) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if slice, _, err := sortSetup(arr); err == nil {
 		mergeSortC(0, slice.Len()-1, slice)
 		return err
@@ -76,7 +76,7 @@ func MergeSortC(arr interface{}) (e error) {
 	}
 }
 
-// Utility function to perform merge sort in slice
+// Utility function to perform merge sort in slice using concurrency
 func mergeSortC(l int, r int, slice reflect.Value) {
 	if r != l {
 		m := l + (r-l)/2

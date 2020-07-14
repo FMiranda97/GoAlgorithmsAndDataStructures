@@ -8,7 +8,7 @@ import (
 
 // Function to start quick sort in slice
 func QuickSort(arr interface{}) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		quickSort(0, slice.Len()-1, slice, swap)
 		return err
@@ -42,7 +42,7 @@ func partition(l int, r int, slice reflect.Value, swap func(int, int)) int {
 
 // Function to start quick sort in slice using concurrency
 func QuickSortC(arr interface{}) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		quickSortC(0, slice.Len()-1, slice, swap)
 		return err
@@ -51,7 +51,7 @@ func QuickSortC(arr interface{}) (e error) {
 	}
 }
 
-// Utility function to perform quick sort in slice
+// Utility function to perform quick sort in slice using concurrency
 func quickSortC(l int, r int, slice reflect.Value, swap func(int, int)) {
 	if l < r {
 		m := partition(l, r, slice, swap)

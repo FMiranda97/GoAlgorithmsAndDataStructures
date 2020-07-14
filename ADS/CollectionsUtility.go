@@ -7,18 +7,18 @@ import (
 
 // Interface that must be implemented by elements of slices using this package
 // CompareTo must return -1, 0 or 1 if target is less than argument, equal or greater respectively
-
 type Sortable interface {
 	CompareTo(interface{}) int8
 }
 
-func panicControl(e *error) {
+// Utility function to catch panics during usage of package methods
+func catch(e *error) {
 	if r := recover(); r != nil {
-		*e = errors.New("sort failed. " + fmt.Sprintf("%v", r))
+		*e = errors.New("operation failed. " + fmt.Sprintf("%v", r))
 	}
 }
 
-// General purpose structure for linear collections
+// General purpose structure for unordered linear collections
 type node struct {
 	cargo interface{}
 	next  *node
@@ -30,11 +30,10 @@ type nodeOrder struct {
 	next  *nodeOrder
 }
 
-// General purpose structure for binary tree collections with string as key
+// General purpose structure for binary tree collections
 type treeNode struct {
 	cargo  Sortable
 	height int
-	isRed  bool
 	left   *treeNode
 	right  *treeNode
 	parent *treeNode

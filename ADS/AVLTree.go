@@ -21,7 +21,7 @@ func NewAVLTree() AVLTree {
 
 // Method to insert cargo into AVL tree
 func (tree *AVLTree) Insert(cargo Sortable) (err error) {
-	defer panicControl(&err)
+	defer catch(&err)
 	if tree.count > 0 && reflect.TypeOf(tree.root.cargo) != reflect.TypeOf(cargo) {
 		return errors.New("inserted cargo not of same type as previously inserted cargo")
 	}
@@ -78,46 +78,46 @@ func insertAVLTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 	return tree, err
 }
 
-// A utility function to get height of the tree
-func getHeight(treeNode *treeNode) int {
-	if treeNode == nil {
+// Utility function to get height of a given tree node
+func getHeight(tree *treeNode) int {
+	if tree == nil {
 		return 0
 	} else {
-		return treeNode.height
+		return tree.height
 	}
 }
 
-// Get height difference of nodeOrder treeNode
-func getDiffHeight(treeNode *treeNode) int {
-	if treeNode == nil {
+// Get height difference of a given node's children
+func getDiffHeight(tree *treeNode) int {
+	if tree == nil {
 		return 0
 	}
-	return getHeight(treeNode.left) - getHeight(treeNode.right)
+	return getHeight(tree.left) - getHeight(tree.right)
 }
 
-// A utility function to right rotate subtree rooted with treeNode
-func rightRotateAVL(treeNode *treeNode) *treeNode {
-	leftNode := treeNode.left
+// Utility function to right rotate subtree rooted with tree
+func rightRotateAVL(tree *treeNode) *treeNode {
+	leftNode := tree.left
 	leftRightNode := leftNode.right
 
-	leftNode.right = treeNode
-	treeNode.left = leftRightNode
+	leftNode.right = tree
+	tree.left = leftRightNode
 
-	treeNode.height = getMax(getHeight(treeNode.right), getHeight(treeNode.left)) + 1
+	tree.height = getMax(getHeight(tree.right), getHeight(tree.left)) + 1
 	leftNode.height = getMax(getHeight(leftNode.right), getHeight(leftNode.left)) + 1
 
 	return leftNode
 }
 
-// A utility function to left rotate subtree rooted with treeNode
-func leftRotateAVL(treeNode *treeNode) *treeNode {
-	rightNode := treeNode.right
+// A utility function to left rotate subtree rooted with tree
+func leftRotateAVL(tree *treeNode) *treeNode {
+	rightNode := tree.right
 	rightLeftNode := rightNode.left
 
-	rightNode.left = treeNode
-	treeNode.right = rightLeftNode
+	rightNode.left = tree
+	tree.right = rightLeftNode
 
-	treeNode.height = getMax(getHeight(treeNode.right), getHeight(treeNode.left)) + 1
+	tree.height = getMax(getHeight(tree.right), getHeight(tree.left)) + 1
 	rightNode.height = getMax(getHeight(rightNode.right), getHeight(rightNode.left)) + 1
 
 	return rightNode
@@ -125,7 +125,7 @@ func leftRotateAVL(treeNode *treeNode) *treeNode {
 
 // Method to remove cargo from an AVL tree
 func (tree *AVLTree) Remove(cargo Sortable) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	tree.root, e = removeAVLTreeUtil(tree.root, cargo)
 	if e == nil {
 		tree.count--
@@ -133,7 +133,7 @@ func (tree *AVLTree) Remove(cargo Sortable) (e error) {
 	return e
 }
 
-// Remove cargo from AVL tree with a given key
+// Utility method for AVL tree cargo removal
 func removeAVLTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 	if tree == nil {
 		return tree, errors.New("no element found with given key")
@@ -186,9 +186,9 @@ func removeAVLTreeUtil(tree *treeNode, cargo Sortable) (*treeNode, error) {
 	return tree, err
 }
 
-// Method to retrieve cargo with a given key
+// Method to retrieve cargo from AVLTree
 func (tree AVLTree) Get(cargo Sortable) (_ Sortable, e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	found, err := getBinaryTreeUtil(tree.root, cargo)
 	if err == nil {
 		return found.cargo, err

@@ -1,6 +1,6 @@
 package main
 
-// This file serves as an example on how to use the ads package
+// This file serves as an example on how to use the ADS package
 
 import (
 	ads "./ADS"

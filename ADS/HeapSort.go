@@ -4,7 +4,7 @@ import "reflect"
 
 // Function to start heap sort in slice
 func HeapSort(arr interface{}) (e error) {
-	defer panicControl(&e)
+	defer catch(&e)
 	if slice, swap, err := sortSetup(arr); err == nil {
 		heapSort(slice, swap)
 		return err
@@ -24,6 +24,7 @@ func heapSort(slice reflect.Value, swap func(int, int)) {
 	}
 }
 
+// Utility function for heapSort
 func heapify(slice reflect.Value, tam int, index int, swap func(int, int)) {
 	largest := index
 	left := 2*index + 1
