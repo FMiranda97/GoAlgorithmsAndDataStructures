@@ -1,7 +1,5 @@
 package ADS
 
-//TODO shell, heap
-
 import (
 	"errors"
 	"reflect"
